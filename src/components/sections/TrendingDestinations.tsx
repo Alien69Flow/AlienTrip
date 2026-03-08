@@ -1,5 +1,7 @@
+import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Star, TrendingUp } from "lucide-react";
+import { Star, TrendingUp, ArrowRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const destinations = [
   {
@@ -59,53 +61,64 @@ const destinations = [
 ];
 
 const TrendingDestinations = () => {
+  const navigate = useNavigate();
+
   return (
     <section className="py-20 px-4">
       <div className="max-w-7xl mx-auto">
-        <div className="flex items-center gap-3 mb-2">
-          <TrendingUp className="text-primary" size={24} />
-          <h2 className="text-3xl font-display font-bold text-foreground">
-            Destinos Trending
-          </h2>
+        <div className="flex items-center justify-between mb-10">
+          <div>
+            <div className="flex items-center gap-2 mb-1">
+              <TrendingUp className="text-primary" size={20} />
+              <h2 className="text-2xl sm:text-3xl font-display font-bold text-foreground">
+                Destinos Trending
+              </h2>
+            </div>
+            <p className="text-sm text-muted-foreground">
+              Los destinos más buscados por nuestra comunidad
+            </p>
+          </div>
         </div>
-        <p className="text-muted-foreground mb-10 max-w-xl">
-          Los destinos más buscados por nuestra comunidad de viajeros
-        </p>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
           {destinations.map((dest, i) => (
             <motion.div
               key={dest.id}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.1 }}
-              className="group glass rounded-2xl overflow-hidden cursor-pointer hover:neon-border transition-all duration-300"
+              transition={{ delay: i * 0.08 }}
+              onClick={() => navigate(`/activities?destination=${encodeURIComponent(dest.name)}`)}
+              className="group rounded-2xl overflow-hidden cursor-pointer bg-card border border-border hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5 transition-all duration-300"
             >
-              <div className="relative h-48 overflow-hidden">
+              <div className="relative h-44 overflow-hidden">
                 <img
                   src={dest.image}
                   alt={dest.name}
-                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
                 />
+                <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
                 <div className="absolute top-3 left-3">
-                  <span className="px-3 py-1 rounded-full text-xs font-medium bg-background/80 backdrop-blur-sm text-foreground">
+                  <span className="px-2.5 py-1 rounded-full text-[11px] font-medium bg-background/80 backdrop-blur-sm text-foreground">
                     {dest.tag}
                   </span>
                 </div>
-                <div className="absolute top-3 right-3 text-2xl">{dest.flag}</div>
+                <div className="absolute top-3 right-3 text-xl">{dest.flag}</div>
               </div>
-              <div className="p-5">
-                <h3 className="font-display font-semibold text-foreground text-lg mb-2">
+              <div className="p-4">
+                <h3 className="font-display font-semibold text-foreground mb-2">
                   {dest.name}
                 </h3>
                 <div className="flex items-center justify-between">
                   <div className="flex items-center gap-1">
-                    <Star className="text-yellow-400 fill-yellow-400" size={14} />
-                    <span className="text-sm text-foreground font-medium">{dest.rating}</span>
+                    <Star className="text-yellow-400 fill-yellow-400" size={13} />
+                    <span className="text-xs text-foreground font-medium">{dest.rating}</span>
                   </div>
-                  <span className="text-primary font-semibold text-sm">{dest.price}</span>
+                  <span className="text-primary font-bold text-sm">{dest.price}</span>
+                </div>
+                <div className="mt-3 flex items-center gap-1 text-xs text-primary font-medium opacity-0 group-hover:opacity-100 transition-opacity">
+                  Explorar <ArrowRight size={12} />
                 </div>
               </div>
             </motion.div>
