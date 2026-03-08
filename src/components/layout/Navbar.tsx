@@ -33,45 +33,46 @@ const Navbar = () => {
   const [moreOpen, setMoreOpen] = useState(false);
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 glass border-b border-white/[0.08]">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-xl border-b border-border">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-14">
           <Link to="/" className="flex items-center gap-2 shrink-0">
-            <span className="text-xl font-display font-bold neon-text">👽 AlienTrip</span>
+            <span className="text-lg font-display font-bold neon-text tracking-tight">👽 AlienTrip</span>
           </Link>
 
           {/* Desktop Nav */}
-          <div className="hidden lg:flex items-center gap-1">
+          <div className="hidden lg:flex items-center gap-0.5">
             {mainLinks.map((link) => {
               const active = location.pathname === link.to;
               return (
                 <Link
                   key={link.to}
                   to={link.to}
-                  className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
-                    active
-                      ? "bg-primary/10 text-primary neon-border"
-                      : "text-muted-foreground hover:text-foreground hover:bg-white/[0.06]"
+                  className={`relative px-3 py-2 text-[13px] font-medium transition-colors ${
+                    active ? "text-primary" : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
-                  <link.icon size={16} />
                   {link.label}
+                  {active && (
+                    <span className="absolute bottom-0 left-3 right-3 h-0.5 bg-primary rounded-full" />
+                  )}
                 </Link>
               );
             })}
 
-            {/* More dropdown */}
             <div className="relative">
               <button
                 onClick={() => setMoreOpen(!moreOpen)}
-                className="flex items-center gap-1 px-3 py-2 rounded-lg text-sm font-medium text-muted-foreground hover:text-foreground hover:bg-white/[0.06] transition-all"
+                className={`flex items-center gap-1 px-3 py-2 text-[13px] font-medium transition-colors ${
+                  moreLinks.some(l => location.pathname === l.to) ? "text-primary" : "text-muted-foreground hover:text-foreground"
+                }`}
               >
-                Más <ChevronDown size={14} className={`transition-transform ${moreOpen ? "rotate-180" : ""}`} />
+                Más <ChevronDown size={12} className={`transition-transform ${moreOpen ? "rotate-180" : ""}`} />
               </button>
               {moreOpen && (
                 <>
                   <div className="fixed inset-0 z-40" onClick={() => setMoreOpen(false)} />
-                  <div className="absolute right-0 top-full mt-2 w-56 glass rounded-xl border border-white/[0.08] p-2 z-50 animate-fade-in">
+                  <div className="absolute right-0 top-full mt-1 w-52 bg-popover border border-border rounded-xl shadow-xl p-1.5 z-50">
                     {moreLinks.map((link) => {
                       const active = location.pathname === link.to;
                       return (
@@ -79,13 +80,11 @@ const Navbar = () => {
                           key={link.to}
                           to={link.to}
                           onClick={() => setMoreOpen(false)}
-                          className={`flex items-center gap-2 px-3 py-2.5 rounded-lg text-sm font-medium transition-all ${
-                            active
-                              ? "bg-primary/10 text-primary"
-                              : "text-muted-foreground hover:text-foreground hover:bg-white/[0.06]"
+                          className={`flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-[13px] font-medium transition-colors ${
+                            active ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
                           }`}
                         >
-                          <link.icon size={16} />
+                          <link.icon size={15} />
                           {link.label}
                         </Link>
                       );
@@ -96,25 +95,23 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* Auth buttons */}
-          <div className="hidden lg:flex items-center gap-3">
-            <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground">
+          {/* Auth */}
+          <div className="hidden lg:flex items-center gap-2">
+            <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground text-[13px] h-8">
               Iniciar sesión
             </Button>
-            <Button size="sm" className="neon-glow">Registrarse</Button>
+            <Button size="sm" className="neon-glow h-8 text-[13px]">Registrarse</Button>
           </div>
 
-          {/* Mobile toggle */}
           <button className="lg:hidden text-foreground p-2" onClick={() => setMobileOpen(!mobileOpen)}>
-            {mobileOpen ? <X size={24} /> : <Menu size={24} />}
+            {mobileOpen ? <X size={22} /> : <Menu size={22} />}
           </button>
         </div>
       </div>
 
-      {/* Mobile menu */}
       {mobileOpen && (
-        <div className="lg:hidden glass border-t border-white/[0.08] animate-fade-in max-h-[80vh] overflow-y-auto">
-          <div className="px-4 py-4 space-y-1">
+        <div className="lg:hidden bg-background/95 backdrop-blur-xl border-t border-border max-h-[80vh] overflow-y-auto">
+          <div className="px-4 py-3 space-y-0.5">
             {allLinks.map((link) => {
               const active = location.pathname === link.to;
               return (
@@ -122,20 +119,18 @@ const Navbar = () => {
                   key={link.to}
                   to={link.to}
                   onClick={() => setMobileOpen(false)}
-                  className={`flex items-center gap-2 px-3 py-3 rounded-lg text-sm font-medium transition-all ${
-                    active
-                      ? "bg-primary/10 text-primary"
-                      : "text-muted-foreground hover:text-foreground hover:bg-white/[0.06]"
+                  className={`flex items-center gap-3 px-3 py-3 rounded-lg text-sm font-medium transition-colors ${
+                    active ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground"
                   }`}
                 >
-                  <link.icon size={18} />
+                  <link.icon size={17} />
                   {link.label}
                 </Link>
               );
             })}
-            <div className="pt-4 flex flex-col gap-2">
-              <Button variant="ghost" className="w-full justify-center">Iniciar sesión</Button>
-              <Button className="w-full justify-center neon-glow">Registrarse</Button>
+            <div className="pt-3 flex flex-col gap-2 border-t border-border mt-2">
+              <Button variant="ghost" className="w-full justify-center text-sm">Iniciar sesión</Button>
+              <Button className="w-full justify-center neon-glow text-sm">Registrarse</Button>
             </div>
           </div>
         </div>
