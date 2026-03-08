@@ -18,7 +18,7 @@ const Index = () => {
           <div className="text-center max-w-5xl mx-auto space-y-6">
             <div className={`transition-all duration-700 ${loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}>
               <span className="inline-block px-4 py-1.5 rounded-full glass text-sm font-medium text-foreground">
-                🌍 Más de 1000 destinos · Vuelos · Hoteles · Coliving · Actividades
+                🌍 12 servicios · Vuelos · Hoteles · Trenes · Paquetes · Coliving · eSIM y más
               </span>
             </div>
 
@@ -36,7 +36,7 @@ const Index = () => {
                 loaded ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
               }`}
             >
-              Combina vuelos, alojamiento, coliving, alquileres y actividades. 
+              Combina vuelos, alojamiento, trenes, paquetes, coliving, seguros, eSIM y más.
               Planifica con IA y ahorra tiempo y dinero.
             </p>
 

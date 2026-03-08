@@ -1,40 +1,12 @@
 import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { Plane, Hotel, Compass, Home, Car, Bot } from "lucide-react";
+import {
+  Bot, Bus, Car, Compass, Home, Hotel,
+  Package, Plane, Shield, Smartphone,
+  TrainFront, UtensilsCrossed,
+} from "lucide-react";
 
 const categories = [
-  {
-    to: "/flights",
-    icon: Plane,
-    title: "Vuelos",
-    desc: "Compara precios en cientos de aerolíneas",
-    gradient: "from-blue-500/20 to-cyan-500/20",
-    iconColor: "text-blue-400",
-  },
-  {
-    to: "/stays",
-    icon: Hotel,
-    title: "Alojamiento",
-    desc: "Hoteles, hostels, apartamentos y más",
-    gradient: "from-amber-500/20 to-orange-500/20",
-    iconColor: "text-amber-400",
-  },
-  {
-    to: "/coliving",
-    icon: Home,
-    title: "Coliving",
-    desc: "Vive y trabaja con comunidades globales",
-    gradient: "from-green-500/20 to-emerald-500/20",
-    iconColor: "text-green-400",
-  },
-  {
-    to: "/rentals",
-    icon: Car,
-    title: "Alquileres",
-    desc: "Coches, motos y bicicletas por destino",
-    gradient: "from-purple-500/20 to-pink-500/20",
-    iconColor: "text-purple-400",
-  },
   {
     to: "/activities",
     icon: Compass,
@@ -51,6 +23,86 @@ const categories = [
     gradient: "from-primary/20 to-neon-glow/20",
     iconColor: "text-primary",
   },
+  {
+    to: "/stays",
+    icon: Hotel,
+    title: "Alojamiento",
+    desc: "Hoteles, hostels, apartamentos y más",
+    gradient: "from-amber-500/20 to-orange-500/20",
+    iconColor: "text-amber-400",
+  },
+  {
+    to: "/rentals",
+    icon: Car,
+    title: "Alquileres",
+    desc: "Coches, motos y bicicletas por destino",
+    gradient: "from-purple-500/20 to-pink-500/20",
+    iconColor: "text-purple-400",
+  },
+  {
+    to: "/coliving",
+    icon: Home,
+    title: "Coliving",
+    desc: "Vive y trabaja con comunidades globales",
+    gradient: "from-green-500/20 to-emerald-500/20",
+    iconColor: "text-green-400",
+  },
+  {
+    to: "/esim",
+    icon: Smartphone,
+    title: "eSIM",
+    desc: "Conectividad instantánea en destino",
+    gradient: "from-teal-500/20 to-cyan-500/20",
+    iconColor: "text-teal-400",
+  },
+  {
+    to: "/packages",
+    icon: Package,
+    title: "Paquetes",
+    desc: "Vuelo + hotel + actividad combinados",
+    gradient: "from-violet-500/20 to-purple-500/20",
+    iconColor: "text-violet-400",
+  },
+  {
+    to: "/restaurants",
+    icon: UtensilsCrossed,
+    title: "Restaurantes",
+    desc: "Gastronomía local en cada destino",
+    gradient: "from-orange-500/20 to-yellow-500/20",
+    iconColor: "text-orange-400",
+  },
+  {
+    to: "/insurance",
+    icon: Shield,
+    title: "Seguros",
+    desc: "Viaja protegido, compara seguros",
+    gradient: "from-emerald-500/20 to-green-500/20",
+    iconColor: "text-emerald-400",
+  },
+  {
+    to: "/transfers",
+    icon: Bus,
+    title: "Transfers",
+    desc: "Traslados aeropuerto-ciudad fáciles",
+    gradient: "from-indigo-500/20 to-blue-500/20",
+    iconColor: "text-indigo-400",
+  },
+  {
+    to: "/trains",
+    icon: TrainFront,
+    title: "Trenes",
+    desc: "Trenes y buses por toda Europa",
+    gradient: "from-sky-500/20 to-blue-500/20",
+    iconColor: "text-sky-400",
+  },
+  {
+    to: "/flights",
+    icon: Plane,
+    title: "Vuelos",
+    desc: "Compara precios en cientos de aerolíneas",
+    gradient: "from-blue-500/20 to-cyan-500/20",
+    iconColor: "text-blue-400",
+  },
 ];
 
 const CategoryShowcase = () => {
@@ -61,17 +113,17 @@ const CategoryShowcase = () => {
           Todo lo que necesitas
         </h2>
         <p className="text-muted-foreground mb-12 text-center max-w-lg mx-auto">
-          Una sola plataforma para planificar, comparar y reservar tu viaje completo
+          12 servicios en una sola plataforma para planificar, comparar y reservar tu viaje completo
         </p>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
           {categories.map((cat, i) => (
             <motion.div
               key={cat.to}
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
-              transition={{ delay: i * 0.08 }}
+              transition={{ delay: i * 0.05 }}
             >
               <Link
                 to={cat.to}
