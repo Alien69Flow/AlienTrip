@@ -1,13 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Star, TrendingUp, ArrowRight } from "lucide-react";
-import { Button } from "@/components/ui/button";
+
+const PLACEHOLDER = "/placeholder.svg";
 
 const destinations = [
   {
     id: "bali",
     name: "Bali, Indonesia",
-    image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&auto=format",
+    image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=600&auto=format&fit=crop",
     rating: 4.9,
     price: "Desde 899€",
     tag: "🔥 Trending",
@@ -16,7 +17,7 @@ const destinations = [
   {
     id: "tokyo",
     name: "Tokio, Japón",
-    image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&auto=format",
+    image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=600&auto=format&fit=crop",
     rating: 4.8,
     price: "Desde 1.199€",
     tag: "⭐ Popular",
@@ -25,7 +26,7 @@ const destinations = [
   {
     id: "lisbon",
     name: "Lisboa, Portugal",
-    image: "https://images.unsplash.com/photo-1585208798174-6cedd86e019a?w=600&auto=format",
+    image: "https://images.unsplash.com/photo-1585208798174-6cedd86e019a?w=600&auto=format&fit=crop",
     rating: 4.7,
     price: "Desde 399€",
     tag: "💰 Oferta",
@@ -34,7 +35,7 @@ const destinations = [
   {
     id: "tulum",
     name: "Tulum, México",
-    image: "https://images.unsplash.com/photo-1682553064729-84ab0dec7cf4?w=600&auto=format",
+    image: "https://images.unsplash.com/photo-1510097467424-192d713fd8b2?w=600&auto=format&fit=crop",
     rating: 4.8,
     price: "Desde 749€",
     tag: "🏖️ Coliving",
@@ -43,7 +44,7 @@ const destinations = [
   {
     id: "dubai",
     name: "Dubai, EAU",
-    image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&auto=format",
+    image: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?w=600&auto=format&fit=crop",
     rating: 4.9,
     price: "Desde 999€",
     tag: "✨ Premium",
@@ -52,7 +53,7 @@ const destinations = [
   {
     id: "barcelona",
     name: "Barcelona, España",
-    image: "https://images.unsplash.com/photo-1583422409516-2895a77efded?w=600&auto=format",
+    image: "https://images.unsplash.com/photo-1583422409516-2895a77efded?w=600&auto=format&fit=crop",
     rating: 4.7,
     price: "Desde 349€",
     tag: "🎨 Cultura",
@@ -97,6 +98,7 @@ const TrendingDestinations = () => {
                   alt={dest.name}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
                   loading="lazy"
+                  onError={(e) => { (e.target as HTMLImageElement).src = PLACEHOLDER; }}
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
                 <div className="absolute top-3 left-3">

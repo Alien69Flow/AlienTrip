@@ -1,12 +1,14 @@
-import { Home, Wifi, Users, MapPin, Star } from "lucide-react";
+import { Home, MapPin, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
+const PLACEHOLDER = "/placeholder.svg";
+
 const mockColivings = [
-  { id: 1, name: "Outsite Lisbon", location: "Lisboa, Portugal", price: 850, rating: 4.8, image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400&auto=format", amenities: ["WiFi", "Coworking", "Comunidad"], minStay: "1 mes" },
-  { id: 2, name: "Selina Tulum", location: "Tulum, México", price: 1200, rating: 4.7, image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?w=400&auto=format", amenities: ["Piscina", "Yoga", "Coworking"], minStay: "2 semanas" },
-  { id: 3, name: "Sun & Co Jávea", location: "Jávea, España", price: 700, rating: 4.9, image: "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=400&auto=format", amenities: ["WiFi", "Eventos", "Playa"], minStay: "1 semana" },
-  { id: 4, name: "Dojo Bali", location: "Canggu, Indonesia", price: 600, rating: 4.6, image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=400&auto=format", amenities: ["Coworking", "Surf", "Comunidad"], minStay: "2 semanas" },
+  { id: 1, name: "Outsite Lisbon", location: "Lisboa, Portugal", price: 850, rating: 4.8, image: "https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?w=400&auto=format&fit=crop", amenities: ["WiFi", "Coworking", "Comunidad"], minStay: "1 mes" },
+  { id: 2, name: "Selina Tulum", location: "Tulum, México", price: 1200, rating: 4.7, image: "https://images.unsplash.com/photo-1499793983394-e58fc2a8a9c6?w=400&auto=format&fit=crop", amenities: ["Piscina", "Yoga", "Coworking"], minStay: "2 semanas" },
+  { id: 3, name: "Sun & Co Jávea", location: "Jávea, España", price: 700, rating: 4.9, image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400&auto=format&fit=crop", amenities: ["WiFi", "Eventos", "Playa"], minStay: "1 semana" },
+  { id: 4, name: "Dojo Bali", location: "Canggu, Indonesia", price: 600, rating: 4.6, image: "https://images.unsplash.com/photo-1596178065887-1198b6148b2b?w=400&auto=format&fit=crop", amenities: ["Coworking", "Surf", "Comunidad"], minStay: "2 semanas" },
 ];
 
 const Coliving = () => (
@@ -29,7 +31,13 @@ const Coliving = () => (
           >
             <div className="md:flex">
               <div className="relative md:w-1/2 h-48 md:h-auto overflow-hidden">
-                <img src={c.image} alt={c.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" />
+                <img
+                  src={c.image}
+                  alt={c.name}
+                  className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                  loading="lazy"
+                  onError={(e) => { (e.target as HTMLImageElement).src = PLACEHOLDER; }}
+                />
               </div>
               <div className="p-5 md:w-1/2 flex flex-col justify-between">
                 <div>

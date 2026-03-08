@@ -2,13 +2,15 @@ import { Hotel, Star, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
+const PLACEHOLDER = "/placeholder.svg";
+
 const mockStays = [
-  { id: 1, name: "Hotel Arts Barcelona", location: "Barcelona, España", price: 180, rating: 4.8, image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&auto=format", type: "Hotel" },
-  { id: 2, name: "Riad Marrakesch", location: "Marrakech, Marruecos", price: 95, rating: 4.6, image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?w=400&auto=format", type: "Riad" },
-  { id: 3, name: "Hostel One Prague", location: "Praga, Rep. Checa", price: 25, rating: 4.5, image: "https://images.unsplash.com/photo-1555854877-bab0e564b8d5?w=400&auto=format", type: "Hostel" },
-  { id: 4, name: "Eco Lodge Bali", location: "Ubud, Indonesia", price: 65, rating: 4.9, image: "https://images.unsplash.com/photo-1602002418082-a4443e081dd1?w=400&auto=format", type: "Lodge" },
-  { id: 5, name: "Apartamento Alfama", location: "Lisboa, Portugal", price: 110, rating: 4.7, image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400&auto=format", type: "Apartamento" },
-  { id: 6, name: "Capsule Hotel Tokyo", location: "Tokio, Japón", price: 40, rating: 4.4, image: "https://images.unsplash.com/photo-1590490360182-c33d57733427?w=400&auto=format", type: "Cápsula" },
+  { id: 1, name: "Hotel Arts Barcelona", location: "Barcelona, España", price: 180, rating: 4.8, image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&auto=format&fit=crop", type: "Hotel" },
+  { id: 2, name: "Riad Marrakesch", location: "Marrakech, Marruecos", price: 95, rating: 4.6, image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?w=400&auto=format&fit=crop", type: "Riad" },
+  { id: 3, name: "Hostel One Prague", location: "Praga, Rep. Checa", price: 25, rating: 4.5, image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=400&auto=format&fit=crop", type: "Hostel" },
+  { id: 4, name: "Eco Lodge Bali", location: "Ubud, Indonesia", price: 65, rating: 4.9, image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=400&auto=format&fit=crop", type: "Lodge" },
+  { id: 5, name: "Apartamento Alfama", location: "Lisboa, Portugal", price: 110, rating: 4.7, image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400&auto=format&fit=crop", type: "Apartamento" },
+  { id: 6, name: "Capsule Hotel Tokyo", location: "Tokio, Japón", price: 40, rating: 4.4, image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400&auto=format&fit=crop", type: "Cápsula" },
 ];
 
 const Stays = () => (
@@ -30,7 +32,13 @@ const Stays = () => (
             className="glass rounded-2xl overflow-hidden group hover:neon-border transition-all"
           >
             <div className="relative h-48 overflow-hidden">
-              <img src={s.image} alt={s.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" loading="lazy" />
+              <img
+                src={s.image}
+                alt={s.name}
+                className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                loading="lazy"
+                onError={(e) => { (e.target as HTMLImageElement).src = PLACEHOLDER; }}
+              />
               <span className="absolute top-3 left-3 px-2.5 py-1 rounded-full text-xs font-medium bg-background/80 backdrop-blur-sm text-foreground">{s.type}</span>
             </div>
             <div className="p-5">
