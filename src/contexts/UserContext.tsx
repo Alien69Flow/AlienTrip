@@ -83,6 +83,11 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     return saved ? JSON.parse(saved) : defaultProfile;
   });
 
+  const [trips, setTrips] = useState<Trip[]>(() => {
+    const saved = localStorage.getItem("alientrip_trips");
+    return saved ? JSON.parse(saved) : [];
+  });
+
   useEffect(() => {
     localStorage.setItem("alientrip_bookings", JSON.stringify(bookings));
   }, [bookings]);
@@ -94,6 +99,10 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     localStorage.setItem("alientrip_profile", JSON.stringify(profile));
   }, [profile]);
+
+  useEffect(() => {
+    localStorage.setItem("alientrip_trips", JSON.stringify(trips));
+  }, [trips]);
 
   const addBooking = (bookingData: Omit<Booking, "id" | "status">) => {
     const newBooking: Booking = {
