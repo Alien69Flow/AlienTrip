@@ -20,6 +20,19 @@ export type Favorite = {
   rating?: number;
 };
 
+export type Trip = {
+  id: string;
+  title: string;
+  destination: string;
+  startDate: string;
+  endDate: string;
+  bookingIds: string[]; // References to existing bookings
+  status: "planning" | "booked" | "completed";
+  totalBudget?: number;
+  notes?: string;
+  image?: string;
+};
+
 export type UserProfile = {
   name: string;
   email: string;
@@ -30,11 +43,19 @@ export type UserProfile = {
 type UserContextType = {
   bookings: Booking[];
   favorites: Favorite[];
+  trips: Trip[];
   profile: UserProfile;
   addBooking: (booking: Omit<Booking, "id" | "status">) => void;
   toggleFavorite: (item: Favorite) => void;
   isFavorite: (id: string) => boolean;
   updateProfile: (profile: Partial<UserProfile>) => void;
+  createTrip: (tripData: Omit<Trip, "id">) => string;
+  updateTrip: (id: string, updates: Partial<Trip>) => void;
+  deleteTrip: (id: string) => void;
+  addBookingToTrip: (tripId: string, bookingId: string) => void;
+  removeBookingFromTrip: (tripId: string, bookingId: string) => void;
+  getTripBookings: (tripId: string) => Booking[];
+  getTripTotalCost: (tripId: string) => number;
 };
 
 const defaultProfile: UserProfile = {
@@ -62,6 +83,11 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     return saved ? JSON.parse(saved) : defaultProfile;
   });
 
+  const [trips, setTrips] = useState<Trip[]>(() => {
+    const saved = localStorage.getItem("alientrip_trips");
+    return saved ? JSON.parse(saved) : [];
+  });
+
   useEffect(() => {
     localStorage.setItem("alientrip_bookings", JSON.stringify(bookings));
   }, [bookings]);
@@ -73,6 +99,10 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   useEffect(() => {
     localStorage.setItem("alientrip_profile", JSON.stringify(profile));
   }, [profile]);
+
+  useEffect(() => {
+    localStorage.setItem("alientrip_trips", JSON.stringify(trips));
+  }, [trips]);
 
   const addBooking = (bookingData: Omit<Booking, "id" | "status">) => {
     const newBooking: Booking = {
@@ -103,16 +133,81 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     toast.success("Perfil actualizado");
   };
 
+  const createTrip = (tripData: Omit<Trip, "id">): string => {
+    const newTrip: Trip = {
+      ...tripData,
+      id: Math.random().toString(36).substr(2, 9),
+    };
+    setTrips((prev) => [newTrip, ...prev]);
+    toast.success(`Viaje "${tripData.title}" creado`);
+    return newTrip.id;
+  };
+
+  const updateTrip = (id: string, updates: Partial<Trip>) => {
+    setTrips((prev) => 
+      prev.map((trip) => 
+        trip.id === id ? { ...trip, ...updates } : trip
+      )
+    );
+    toast.success("Viaje actualizado");
+  };
+
+  const deleteTrip = (id: string) => {
+    setTrips((prev) => prev.filter((trip) => trip.id !== id));
+    toast.success("Viaje eliminado");
+  };
+
+  const addBookingToTrip = (tripId: string, bookingId: string) => {
+    setTrips((prev) =>
+      prev.map((trip) =>
+        trip.id === tripId
+          ? { ...trip, bookingIds: [...new Set([...trip.bookingIds, bookingId])] }
+          : trip
+      )
+    );
+    toast.success("Reserva añadida al viaje");
+  };
+
+  const removeBookingFromTrip = (tripId: string, bookingId: string) => {
+    setTrips((prev) =>
+      prev.map((trip) =>
+        trip.id === tripId
+          ? { ...trip, bookingIds: trip.bookingIds.filter((id) => id !== bookingId) }
+          : trip
+      )
+    );
+    toast.success("Reserva eliminada del viaje");
+  };
+
+  const getTripBookings = (tripId: string): Booking[] => {
+    const trip = trips.find((t) => t.id === tripId);
+    if (!trip) return [];
+    return bookings.filter((booking) => trip.bookingIds.includes(booking.id));
+  };
+
+  const getTripTotalCost = (tripId: string): number => {
+    const tripBookings = getTripBookings(tripId);
+    return tripBookings.reduce((total, booking) => total + booking.price, 0);
+  };
+
   return (
     <UserContext.Provider
       value={{
         bookings,
         favorites,
+        trips,
         profile,
         addBooking,
         toggleFavorite,
         isFavorite,
         updateProfile,
+        createTrip,
+        updateTrip,
+        deleteTrip,
+        addBookingToTrip,
+        removeBookingFromTrip,
+        getTripBookings,
+        getTripTotalCost,
       }}
     >
       {children}

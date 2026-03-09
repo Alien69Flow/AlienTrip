@@ -5,11 +5,13 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { User, Heart, Calendar, Settings, MapPin, Plane } from "lucide-react";
+import TripCard from "@/components/trip/TripCard";
+import { User, Heart, Calendar, Settings, MapPin, Plane, Route } from "lucide-react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const Dashboard = () => {
-  const { profile, updateProfile, bookings, favorites } = useUser();
+  const { profile, updateProfile, bookings, favorites, trips } = useUser();
   const [editProfile, setEditProfile] = useState(profile);
 
   const handleProfileSubmit = (e: React.FormEvent) => {
@@ -30,12 +32,46 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <Tabs defaultValue="bookings" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 max-w-md mb-8">
+        <Tabs defaultValue="trips" className="w-full">
+          <TabsList className="grid w-full grid-cols-4 max-w-lg mb-8">
+            <TabsTrigger value="trips" className="gap-2"><Route size={16} /> Mis Viajes</TabsTrigger>
             <TabsTrigger value="bookings" className="gap-2"><Calendar size={16} /> Reservas</TabsTrigger>
             <TabsTrigger value="favorites" className="gap-2"><Heart size={16} /> Favoritos</TabsTrigger>
             <TabsTrigger value="profile" className="gap-2"><User size={16} /> Perfil</TabsTrigger>
           </TabsList>
+
+          <TabsContent value="trips">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl font-display font-bold text-foreground">Mis Viajes</h2>
+              <Link to="/trip-planner">
+                <Button className="neon-glow gap-1.5">
+                  <Route size={16} /> Crear Viaje
+                </Button>
+              </Link>
+            </div>
+            <div className="grid gap-4">
+              {trips.length === 0 ? (
+                <Card className="glass border-none text-center py-12">
+                  <CardContent className="flex flex-col items-center gap-4 text-muted-foreground">
+                    <Route size={48} className="opacity-20" />
+                    <div>
+                      <p className="mb-2">No tienes viajes planificados todavía.</p>
+                      <p className="text-xs">Organiza tus reservas en itinerarios personalizados</p>
+                    </div>
+                    <Link to="/trip-planner">
+                      <Button variant="outline" className="gap-1.5">
+                        <Route size={16} /> Planificar primer viaje
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              ) : (
+                trips.map((trip, i) => (
+                  <TripCard key={trip.id} trip={trip} index={i} />
+                ))
+              )}
+            </div>
+          </TabsContent>
 
           <TabsContent value="bookings">
             <div className="grid gap-4">

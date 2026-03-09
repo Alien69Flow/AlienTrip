@@ -8,7 +8,8 @@ import Layout from "@/components/layout/Layout";
 import ScrollToTop from "@/components/ScrollToTop";
 import Dashboard from "./pages/Dashboard";
 import Activities from "./pages/Activities";
-import AiPlanner from "./pages/AiPlanner";
+import TripPlanner from "./pages/TripPlanner";
+import TripDetail from "./pages/TripDetail";
 import Coliving from "./pages/Coliving";
 import Esim from "./pages/Esim";
 import Flights from "./pages/Flights";
@@ -37,7 +38,8 @@ const App = () => (
               <Route path="/" element={<Index />} />
               <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/activities" element={<Activities />} />
-            <Route path="/ai-planner" element={<AiPlanner />} />
+            <Route path="/trip-planner" element={<TripPlanner />} />
+            <Route path="/trip/:id" element={<TripDetail />} />
             <Route path="/coliving" element={<Coliving />} />
             <Route path="/esim" element={<Esim />} />
             <Route path="/flights" element={<Flights />} />
