@@ -64,20 +64,26 @@ export const BookingModal = ({ isOpen, onClose, item }: BookingModalProps) => {
                   <CalendarIcon size={16} /> Fechas
                 </label>
                 <div className="bg-background/50 rounded-xl p-2 border border-border flex justify-center">
-                  <Calendar
-                    mode={needsDateRange ? "range" : "single"}
-                    selected={needsDateRange ? { from: date, to: endDate } : date}
-                    onSelect={(val: any) => {
-                      if (needsDateRange) {
-                        setDate(val?.from);
-                        setEndDate(val?.to);
-                      } else {
-                        setDate(val);
-                      }
-                    }}
-                    className="p-3 pointer-events-auto"
-                    disabled={(d) => d < new Date(new Date().setHours(0,0,0,0))}
-                  />
+                  {needsDateRange ? (
+                    <Calendar
+                      mode="range"
+                      selected={date && endDate ? { from: date, to: endDate } : undefined}
+                      onSelect={(val) => {
+                        if (val?.from) setDate(val.from);
+                        if (val?.to) setEndDate(val.to);
+                      }}
+                      className="p-3 pointer-events-auto"
+                      disabled={(d) => d < new Date(new Date().setHours(0,0,0,0))}
+                    />
+                  ) : (
+                    <Calendar
+                      mode="single"
+                      selected={date}
+                      onSelect={setDate}
+                      className="p-3 pointer-events-auto"
+                      disabled={(d) => d < new Date(new Date().setHours(0,0,0,0))}
+                    />
+                  )}
                 </div>
               </div>
 
