@@ -20,6 +20,19 @@ export type Favorite = {
   rating?: number;
 };
 
+export type Trip = {
+  id: string;
+  title: string;
+  destination: string;
+  startDate: string;
+  endDate: string;
+  bookingIds: string[]; // References to existing bookings
+  status: "planning" | "booked" | "completed";
+  totalBudget?: number;
+  notes?: string;
+  image?: string;
+};
+
 export type UserProfile = {
   name: string;
   email: string;
