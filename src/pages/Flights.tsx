@@ -1,6 +1,7 @@
 import { Plane, ArrowRight, Clock, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { FavoriteButton } from "@/components/FavoriteButton";
 
 const mockFlights = [
   { id: 1, airline: "Iberia", from: "MAD", to: "BCN", price: 49, duration: "1h 15m", rating: 4.5, stops: 0 },
@@ -53,6 +54,7 @@ const Flights = () => (
 
             <div className="flex items-center gap-4">
               <span className="text-2xl font-display font-bold text-primary">{f.price}€</span>
+              <FavoriteButton item={{ id: `flight-${f.id}`, title: `Vuelo ${f.from} - ${f.to}`, type: "flight", price: f.price, rating: f.rating }} />
               <Button size="sm" className="neon-glow">Seleccionar</Button>
             </div>
           </motion.div>

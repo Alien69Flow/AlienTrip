@@ -3,8 +3,10 @@ import { Toaster as Sonner } from "@/components/ui/sonner";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { UserProvider } from "@/contexts/UserContext";
 import Layout from "@/components/layout/Layout";
 import ScrollToTop from "@/components/ScrollToTop";
+import Dashboard from "./pages/Dashboard";
 import Activities from "./pages/Activities";
 import AiPlanner from "./pages/AiPlanner";
 import Coliving from "./pages/Coliving";
@@ -24,14 +26,16 @@ const queryClient = new QueryClient();
 
 const App = () => (
   <QueryClientProvider client={queryClient}>
-    <TooltipProvider>
-      <Toaster />
-      <Sonner />
-      <BrowserRouter>
-        <ScrollToTop />
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Index />} />
+    <UserProvider>
+      <TooltipProvider>
+        <Toaster />
+        <Sonner />
+        <BrowserRouter>
+          <ScrollToTop />
+          <Layout>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/activities" element={<Activities />} />
             <Route path="/ai-planner" element={<AiPlanner />} />
             <Route path="/coliving" element={<Coliving />} />
@@ -45,10 +49,11 @@ const App = () => (
             <Route path="/trains" element={<Trains />} />
             <Route path="/transfers" element={<Transfers />} />
             <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Layout>
-      </BrowserRouter>
-    </TooltipProvider>
+            </Routes>
+          </Layout>
+        </BrowserRouter>
+      </TooltipProvider>
+    </UserProvider>
   </QueryClientProvider>
 );
 
