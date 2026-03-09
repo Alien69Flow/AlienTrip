@@ -169,6 +169,9 @@ const Navbar = () => {
                 );
               })}
               <div className="pt-4 flex flex-col gap-2 border-t border-border/50 mt-3">
+                <Link to="/dashboard" onClick={() => setMobileOpen(false)} className="flex items-center justify-center gap-2 w-full py-2 text-sm text-foreground hover:bg-secondary/50 rounded-xl mb-2">
+                  <User size={18} /> Mi Perfil
+                </Link>
                 <Button variant="ghost" className="w-full justify-center text-sm rounded-xl">Iniciar sesión</Button>
                 <Button className="w-full justify-center neon-glow text-sm rounded-xl">Registrarse</Button>
               </div>

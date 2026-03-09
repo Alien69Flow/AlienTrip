@@ -54,6 +54,7 @@ const Flights = () => (
 
             <div className="flex items-center gap-4">
               <span className="text-2xl font-display font-bold text-primary">{f.price}€</span>
+              <FavoriteButton item={{ id: `flight-${f.id}`, title: `Vuelo ${f.from} - ${f.to}`, type: "flight", price: f.price, rating: f.rating }} />
               <Button size="sm" className="neon-glow">Seleccionar</Button>
             </div>
           </motion.div>

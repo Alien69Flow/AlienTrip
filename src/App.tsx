@@ -49,10 +49,11 @@ const App = () => (
             <Route path="/trains" element={<Trains />} />
             <Route path="/transfers" element={<Transfers />} />
             <Route path="*" element={<NotFound />} />
-          </Routes>
-        </Layout>
-      </BrowserRouter>
-    </TooltipProvider>
+            </Routes>
+          </Layout>
+        </BrowserRouter>
+      </TooltipProvider>
+    </UserProvider>
   </QueryClientProvider>
 );
 
