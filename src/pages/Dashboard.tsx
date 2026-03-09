@@ -11,7 +11,7 @@ import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const Dashboard = () => {
-  const { profile, updateProfile, bookings, favorites } = useUser();
+  const { profile, updateProfile, bookings, favorites, trips } = useUser();
   const [editProfile, setEditProfile] = useState(profile);
 
   const handleProfileSubmit = (e: React.FormEvent) => {
