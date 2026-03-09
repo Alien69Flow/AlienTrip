@@ -32,8 +32,9 @@ const Dashboard = () => {
           </div>
         </div>
 
-        <Tabs defaultValue="bookings" className="w-full">
-          <TabsList className="grid w-full grid-cols-3 max-w-md mb-8">
+        <Tabs defaultValue="trips" className="w-full">
+          <TabsList className="grid w-full grid-cols-4 max-w-lg mb-8">
+            <TabsTrigger value="trips" className="gap-2"><Route size={16} /> Mis Viajes</TabsTrigger>
             <TabsTrigger value="bookings" className="gap-2"><Calendar size={16} /> Reservas</TabsTrigger>
             <TabsTrigger value="favorites" className="gap-2"><Heart size={16} /> Favoritos</TabsTrigger>
             <TabsTrigger value="profile" className="gap-2"><User size={16} /> Perfil</TabsTrigger>
