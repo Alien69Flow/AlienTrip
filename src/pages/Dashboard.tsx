@@ -5,7 +5,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
-import { User, Heart, Calendar, Settings, MapPin, Plane } from "lucide-react";
+import TripCard from "@/components/trip/TripCard";
+import { User, Heart, Calendar, Settings, MapPin, Plane, Route } from "lucide-react";
+import { Link } from "react-router-dom";
 import { motion } from "framer-motion";
 
 const Dashboard = () => {
