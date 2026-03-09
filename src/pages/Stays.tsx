@@ -11,12 +11,20 @@ import { BookingModal } from "@/components/booking/BookingModal";
 const PLACEHOLDER = "/placeholder.svg";
 
 const mockStays = [
-  { id: 1, name: "Hotel Arts Barcelona", location: "Barcelona, España", price: 180, rating: 4.8, image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&auto=format&fit=crop", type: "Hotel" },
-  { id: 2, name: "Riad Marrakesch", location: "Marrakech, Marruecos", price: 95, rating: 4.6, image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?w=400&auto=format&fit=crop", type: "Riad" },
-  { id: 3, name: "Hostel One Prague", location: "Praga, Rep. Checa", price: 25, rating: 4.5, image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=400&auto=format&fit=crop", type: "Hostel" },
-  { id: 4, name: "Eco Lodge Bali", location: "Ubud, Indonesia", price: 65, rating: 4.9, image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=400&auto=format&fit=crop", type: "Lodge" },
-  { id: 5, name: "Apartamento Alfama", location: "Lisboa, Portugal", price: 110, rating: 4.7, image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400&auto=format&fit=crop", type: "Apartamento" },
-  { id: 6, name: "Capsule Hotel Tokyo", location: "Tokio, Japón", price: 40, rating: 4.4, image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400&auto=format&fit=crop", type: "Cápsula" },
+  { id: 1, name: "Hotel Arts Barcelona", location: "Barcelona, España", price: 180, rating: 4.8, image: "https://images.unsplash.com/photo-1566073771259-6a8506099945?w=400&auto=format&fit=crop", type: "Hotel", lat: 41.3851, lng: 2.1734 },
+  { id: 2, name: "Riad Marrakesch", location: "Marrakech, Marruecos", price: 95, rating: 4.6, image: "https://images.unsplash.com/photo-1582719508461-905c673771fd?w=400&auto=format&fit=crop", type: "Riad", lat: 31.6295, lng: -7.9811 },
+  { id: 3, name: "Hostel One Prague", location: "Praga, Rep. Checa", price: 25, rating: 4.5, image: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=400&auto=format&fit=crop", type: "Hostel", lat: 50.0755, lng: 14.4378 },
+  { id: 4, name: "Eco Lodge Bali", location: "Ubud, Indonesia", price: 65, rating: 4.9, image: "https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=400&auto=format&fit=crop", type: "Lodge", lat: -8.5069, lng: 115.2625 },
+  { id: 5, name: "Apartamento Alfama", location: "Lisboa, Portugal", price: 110, rating: 4.7, image: "https://images.unsplash.com/photo-1502672260266-1c1ef2d93688?w=400&auto=format&fit=crop", type: "Apartamento", lat: 38.7223, lng: -9.1393 },
+  { id: 6, name: "Capsule Hotel Tokyo", location: "Tokio, Japón", price: 40, rating: 4.4, image: "https://images.unsplash.com/photo-1540959733332-eab4deabeeaf?w=400&auto=format&fit=crop", type: "Cápsula", lat: 35.6762, lng: 139.6503 },
+];
+
+const filterCategories = [
+  { id: "hotel", label: "Hoteles" },
+  { id: "hostel", label: "Hostels" },
+  { id: "apartamento", label: "Apartamentos" },
+  { id: "lodge", label: "Lodges" },
+  { id: "capsula", label: "Cápsulas" },
 ];
 
 const Stays = () => (
