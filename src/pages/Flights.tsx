@@ -1,6 +1,7 @@
 import { Plane, ArrowRight, Clock, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { FavoriteButton } from "@/components/FavoriteButton";
 
 const mockFlights = [
   { id: 1, airline: "Iberia", from: "MAD", to: "BCN", price: 49, duration: "1h 15m", rating: 4.5, stops: 0 },
