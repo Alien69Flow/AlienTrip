@@ -116,8 +116,11 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* Auth buttons */}
+          {/* Auth buttons & Dashboard */}
           <div className="hidden lg:flex items-center gap-2">
+            <Link to="/dashboard" className="p-2 text-muted-foreground hover:text-foreground hover:bg-secondary/50 rounded-full transition-colors mr-2">
+              <User size={20} />
+            </Link>
             <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground text-[13px] h-9 rounded-full px-4">
               Iniciar sesión
             </Button>
