@@ -201,6 +201,13 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
         toggleFavorite,
         isFavorite,
         updateProfile,
+        createTrip,
+        updateTrip,
+        deleteTrip,
+        addBookingToTrip,
+        removeBookingFromTrip,
+        getTripBookings,
+        getTripTotalCost,
       }}
     >
       {children}
