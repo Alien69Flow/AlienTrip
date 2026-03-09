@@ -14,7 +14,7 @@ const mainLinks = [
   { to: "/coliving", label: "Coliving", icon: Home },
   { to: "/packages", label: "Paquetes", icon: Package },
   { to: "/flights", label: "Vuelos", icon: Plane },
-  { to: "/ai-planner", label: "AI Planner", icon: Bot },
+  { to: "/trip-planner", label: "Trip Planner", icon: Bot },
 ];
 
 const moreLinks = [

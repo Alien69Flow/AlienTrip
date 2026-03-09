@@ -40,6 +40,39 @@ const Dashboard = () => {
             <TabsTrigger value="profile" className="gap-2"><User size={16} /> Perfil</TabsTrigger>
           </TabsList>
 
+          <TabsContent value="trips">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl font-display font-bold text-foreground">Mis Viajes</h2>
+              <Link to="/trip-planner">
+                <Button className="neon-glow gap-1.5">
+                  <Route size={16} /> Crear Viaje
+                </Button>
+              </Link>
+            </div>
+            <div className="grid gap-4">
+              {trips.length === 0 ? (
+                <Card className="glass border-none text-center py-12">
+                  <CardContent className="flex flex-col items-center gap-4 text-muted-foreground">
+                    <Route size={48} className="opacity-20" />
+                    <div>
+                      <p className="mb-2">No tienes viajes planificados todavía.</p>
+                      <p className="text-xs">Organiza tus reservas en itinerarios personalizados</p>
+                    </div>
+                    <Link to="/trip-planner">
+                      <Button variant="outline" className="gap-1.5">
+                        <Route size={16} /> Planificar primer viaje
+                      </Button>
+                    </Link>
+                  </CardContent>
+                </Card>
+              ) : (
+                trips.map((trip, i) => (
+                  <TripCard key={trip.id} trip={trip} index={i} />
+                ))
+              )}
+            </div>
+          </TabsContent>
+
           <TabsContent value="bookings">
             <div className="grid gap-4">
               {bookings.length === 0 ? (
