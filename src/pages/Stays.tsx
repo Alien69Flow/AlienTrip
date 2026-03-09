@@ -1,6 +1,12 @@
+import { useState } from "react";
 import { Hotel, Star, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import { FilterSidebar } from "@/components/filters/FilterSidebar";
+import { FilterBar, ViewMode } from "@/components/filters/FilterBar";
+import { MapView } from "@/components/filters/MapView";
+import { FavoriteButton } from "@/components/FavoriteButton";
+import { BookingModal } from "@/components/booking/BookingModal";
 
 const PLACEHOLDER = "/placeholder.svg";
 
