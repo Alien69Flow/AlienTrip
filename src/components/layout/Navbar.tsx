@@ -3,7 +3,7 @@ import { Link, useLocation } from "react-router-dom";
 import {
   Bot, Bus, Car, Compass, Home, Hotel,
   Menu, Package, Plane, Shield, Smartphone,
-  TrainFront, UtensilsCrossed, X, ChevronDown,
+  TrainFront, UtensilsCrossed, X, ChevronDown, User,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
