@@ -43,11 +43,19 @@ export type UserProfile = {
 type UserContextType = {
   bookings: Booking[];
   favorites: Favorite[];
+  trips: Trip[];
   profile: UserProfile;
   addBooking: (booking: Omit<Booking, "id" | "status">) => void;
   toggleFavorite: (item: Favorite) => void;
   isFavorite: (id: string) => boolean;
   updateProfile: (profile: Partial<UserProfile>) => void;
+  createTrip: (tripData: Omit<Trip, "id">) => string;
+  updateTrip: (id: string, updates: Partial<Trip>) => void;
+  deleteTrip: (id: string) => void;
+  addBookingToTrip: (tripId: string, bookingId: string) => void;
+  removeBookingFromTrip: (tripId: string, bookingId: string) => void;
+  getTripBookings: (tripId: string) => Booking[];
+  getTripTotalCost: (tripId: string) => number;
 };
 
 const defaultProfile: UserProfile = {
