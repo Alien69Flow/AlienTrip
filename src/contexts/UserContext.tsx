@@ -1,6 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react";
 import { toast } from "sonner";
-import { supabase } from "@/lib/supabase";
+import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 
 export type Booking = {
   id: string;
@@ -147,6 +147,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   }, [profile]);
 
   const loadData = async () => {
+    if (!isSupabaseConfigured || !supabase) return;
     const [tripsRes, bookingsRes, favsRes] = await Promise.all([
       supabase.from("trips").select("*").order("created_at", { ascending: false }),
       supabase.from("bookings").select("*").order("created_at", { ascending: false }),
@@ -174,6 +175,13 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   }, []);
 
   const addBooking = (bookingData: Omit<Booking, "id" | "status" | "tripId">) => {
+    const localBooking: Booking = {
+      ...bookingData,
+      id: Math.random().toString(36).slice(2, 11),
+      status: "confirmed",
+    };
+    setBookings((prev) => [localBooking, ...prev]);
+    if (!isSupabaseConfigured || !supabase) return;
     (async () => {
       const { data, error } = await supabase
         .from("bookings")
@@ -201,6 +209,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     if (exists) {
       setFavorites((prev) => prev.filter((fav) => fav.id !== item.id));
       toast.success("Eliminado de favoritos");
+      if (!isSupabaseConfigured || !supabase) return;
       (async () => {
         const { error } = await supabase.from("favorites").delete().eq("id", item.id);
         if (error) console.error(error);
@@ -208,6 +217,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     } else {
       setFavorites((prev) => [...prev, item]);
       toast.success("Añadido a favoritos");
+      if (!isSupabaseConfigured || !supabase) return;
       (async () => {
         const { error } = await supabase.from("favorites").upsert({
           id: item.id,
@@ -232,6 +242,10 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
   const createTrip = (tripData: Omit<Trip, "id">): string => {
     const tempId = `temp-${Math.random().toString(36).slice(2, 9)}`;
     setTrips((prev) => [{ ...tripData, id: tempId }, ...prev]);
+    if (!isSupabaseConfigured || !supabase) {
+      toast.success(`Viaje "${tripData.title}" creado`);
+      return tempId;
+    }
     (async () => {
       const { data, error } = await supabase
         .from("trips")
@@ -278,7 +292,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       prev.map((trip) => (trip.id === id ? { ...trip, ...updates } : trip))
     );
     toast.success("Viaje actualizado");
-    if (id.startsWith("temp-")) return;
+    if (!isSupabaseConfigured || !supabase) return;
     (async () => {
       const { error } = await supabase
         .from("trips")
@@ -294,7 +308,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
       prev.map((b) => (b.tripId === id ? { ...b, tripId: undefined } : b))
     );
     toast.success("Viaje eliminado");
-    if (id.startsWith("temp-")) return;
+    if (!isSupabaseConfigured || !supabase) return;
     (async () => {
       const { error } = await supabase.from("trips").delete().eq("id", id);
       if (error) console.error(error);
@@ -314,6 +328,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     );
     toast.success("Reserva añadida al viaje");
     (async () => {
+      if (!isSupabaseConfigured || !supabase) return;
       const { error } = await supabase
         .from("bookings")
         .update({ trip_id: tripId })
@@ -335,6 +350,7 @@ export const UserProvider = ({ children }: { children: React.ReactNode }) => {
     );
     toast.success("Reserva eliminada del viaje");
     (async () => {
+      if (!isSupabaseConfigured || !supabase) return;
       const { error } = await supabase
         .from("bookings")
         .update({ trip_id: null })

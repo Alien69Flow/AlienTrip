@@ -1,4 +1,6 @@
-import { Compass, Clock, Star, MapPin } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import { Compass, Clock, Star, MapPin, SearchX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 
@@ -13,17 +15,37 @@ const mockActivities = [
   { id: 6, name: "Kayak en los fiordos", location: "Bergen, Noruega", price: 80, rating: 4.8, duration: "6h", image: "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=400&auto=format&fit=crop", category: "Aventura" },
 ];
 
-const Activities = () => (
+const Activities = () => {
+  const [searchParams] = useSearchParams();
+  const destination = (searchParams.get("destination") || "").toLowerCase();
+
+  const visible = destination
+    ? mockActivities.filter((a) => a.location.toLowerCase().includes(destination))
+    : mockActivities;
+
+  return (
   <div className="min-h-screen py-12 px-4">
     <div className="max-w-6xl mx-auto">
       <div className="flex items-center gap-3 mb-2">
         <Compass className="text-rose-400" size={28} />
         <h1 className="text-3xl font-display font-bold text-foreground">Actividades</h1>
       </div>
-      <p className="text-muted-foreground mb-8">Experiencias únicas, tours y aventuras en cada destino</p>
+      <p className="text-muted-foreground mb-8">
+        Experiencias únicas, tours y aventuras en cada destino
+        {destination && (
+          <> — resultados para <span className="text-foreground font-medium">{destination}</span></>
+        )}
+      </p>
 
+      {visible.length === 0 ? (
+        <div className="text-center py-20 text-muted-foreground">
+          <SearchX size={48} className="mx-auto mb-4 opacity-30" />
+          <p className="mb-1">No hay actividades para «{destination}» todavía.</p>
+          <p className="text-xs">Estamos ampliando destinos — prueba con Roma, Bali, Bangkok o Madrid.</p>
+        </div>
+      ) : (
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {mockActivities.map((a, i) => (
+        {visible.map((a, i) => (
           <motion.div
             key={a.id}
             initial={{ opacity: 0, y: 20 }}
@@ -58,8 +80,10 @@ const Activities = () => (
           </motion.div>
         ))}
       </div>
+      )}
     </div>
   </div>
-);
+  );
+};
 
 export default Activities;

@@ -59,12 +59,10 @@ const AiPlanner = () => {
       });
     } finally {
       setLoading(false);
-      const finalMsgs = history;
-      const reply = finalMsgs[finalMsgs.length - 1];
-      // reply content is streamed above; persist once complete using latest state
+      // Persist the assistant's reply once the stream is complete.
       setMessages((prev) => {
         const last = prev[prev.length - 1];
-        if (last.content) {
+        if (last?.role === "assistant" && last.content) {
           persistAitorTurn(sessionIdRef.current, "assistant", last.content).then(
             (sid) => {
               sessionIdRef.current = sid;
@@ -73,7 +71,6 @@ const AiPlanner = () => {
         }
         return prev;
       });
-      void reply;
     }
   };
 

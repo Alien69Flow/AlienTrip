@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { Hotel, Star, MapPin } from "lucide-react";
+import { useState, useEffect } from "react";
+import { useSearchParams } from "react-router-dom";
+import { Hotel, Star, MapPin, SearchX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { FilterSidebar } from "@/components/filters/FilterSidebar";
@@ -28,12 +29,22 @@ const filterCategories = [
 ];
 
 const Stays = () => {
+  const [searchParams] = useSearchParams();
+  const destination = (searchParams.get("destination") || "").toLowerCase();
   const [viewMode, setViewMode] = useState<ViewMode>("list");
   const [filteredStays, setFilteredStays] = useState(mockStays);
   const [bookingItem, setBookingItem] = useState<any>(null);
 
+  const baseStays = destination
+    ? mockStays.filter((s) => s.location.toLowerCase().includes(destination))
+    : mockStays;
+
+  useEffect(() => {
+    setFilteredStays(baseStays);
+  }, [destination]);
+
   const handleFilterChange = (filters: any) => {
-    let filtered = [...mockStays];
+    let filtered = [...baseStays];
     if (filters.priceRange) {
       filtered = filtered.filter(s => s.price >= filters.priceRange[0] && s.price <= filters.priceRange[1]);
     }
@@ -108,7 +119,12 @@ const Stays = () => {
           <Hotel className="text-amber-400" size={28} />
           <h1 className="text-3xl font-display font-bold text-foreground">Alojamiento</h1>
         </div>
-        <p className="text-muted-foreground mb-8">Hoteles, hostels, apartamentos y experiencias únicas</p>
+        <p className="text-muted-foreground mb-8">
+          Hoteles, hostels, apartamentos y experiencias únicas
+          {destination && (
+            <> — resultados para <span className="text-foreground font-medium">{destination}</span></>
+          )}
+        </p>
 
         <FilterBar 
           viewMode={viewMode}
@@ -127,7 +143,13 @@ const Stays = () => {
           )}
 
           <div className="flex-1 min-h-[600px]">
-            {viewMode === "list" && (
+            {filteredStays.length === 0 ? (
+              <div className="text-center py-20 text-muted-foreground">
+                <SearchX size={48} className="mx-auto mb-4 opacity-30" />
+                <p className="mb-1">No hay alojamiento para «{destination}» todavía.</p>
+                <p className="text-xs">Prueba con Barcelona, Lisboa, Tokio o Bali.</p>
+              </div>
+            ) : viewMode === "list" && (
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                 {filteredStays.map((s, i) => <StayCard key={s.id} s={s} i={i} />)}
               </div>

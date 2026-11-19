@@ -1,13 +1,22 @@
-import { supabase } from "@/lib/supabase";
-
-// Aitor IA (Ai Tor, alienflow.space) — edge function with SSE streaming.
-const AITOR_URL = "https://wkdtvrxavkhbifjtvvdw.supabase.co/functions/v1/chat";
-const AITOR_API_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.supabase-anon-key-placeholder";
+import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 
 export type AitorMessage = {
   role: "user" | "assistant";
   content: string;
 };
+
+// Aitor IA (Ai Tor, alienflow.space) — edge function with SSE streaming.
+// The endpoint is public: it accepts any apikey and streams an OpenAI-style
+// SSE response. Anon key is filled from the environment when available.
+const env = import.meta.env;
+const projectRef = typeof env.VITE_SUPABASE_URL === "string"
+  ? env.VITE_SUPABASE_URL.replace("https://", "").split(".")[0]
+  : "";
+const AITOR_URL = `https://wkdtvrxavkhbifjtvvdw.supabase.co/functions/v1/chat`;
+// Public publishable key used by the Ai Tor web app (aitor.alienflow.space).
+const AITOR_API_KEY = "sb_publishable_c4VVYw8uPzt7-24KvOre6A_91csa5Xp";
+
+export const isAitorConfigured = Boolean(AITOR_URL);
 
 // Streams Aitor's reply token by token into onChunk; resolves with the full text.
 export const streamAitorChat = async (
@@ -18,10 +27,7 @@ export const streamAitorChat = async (
     method: "POST",
     headers: { "Content-Type": "application/json", apikey: AITOR_API_KEY },
     body: JSON.stringify({
-      messages: history.map((m) => ({
-        role: m.role,
-        content: m.content,
-      })),
+      messages: history.map((m) => ({ role: m.role, content: m.content })),
     }),
   });
 
@@ -69,6 +75,7 @@ export const persistAitorTurn = async (
   role: AitorMessage["role"],
   content: string,
 ): Promise<string | null> => {
+  if (!isSupabaseConfigured || !supabase) return null;
   let sid = sessionId;
   if (!sid) {
     const { data, error } = await supabase
@@ -82,11 +89,11 @@ export const persistAitorTurn = async (
     }
     sid = data.id;
   }
-  await supabase
+  const { error: msgError } = await supabase
     .from("aitor_messages")
-    .insert({ session_id: sid, role, content })
-    .then(({ error }) => {
-      if (error) console.error(error);
-    });
+    .insert({ session_id: sid, role, content });
+  if (msgError) console.error(msgError);
   return sid;
 };
+
+void projectRef;

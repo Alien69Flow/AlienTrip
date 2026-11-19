@@ -1,11 +1,13 @@
-import { supabase } from "@/lib/supabase";
+import { supabase, isSupabaseConfigured } from "@/lib/supabase";
 
+// Best-effort analytics log: never blocks or breaks the search flow.
 export const logSearch = (search: {
   category: string;
   destination: string;
   dates: string;
   travelers: string;
 }) => {
+  if (!isSupabaseConfigured || !supabase) return;
   (async () => {
     const { error } = await supabase.from("searches").insert({
       category: search.category,
