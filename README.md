@@ -2,7 +2,7 @@
 
 ## Project info
 
-**URL**: https://lovable.dev/projects/8d9f7020-97f6-4cf7-90ae-41252a34d3b3
+**URL**: https://ATrip.AlienFlow.Space
 
 ## How can I edit this code?
 
