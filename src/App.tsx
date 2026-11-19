@@ -7,6 +7,7 @@ import { UserProvider } from "@/contexts/UserContext";
 import Layout from "@/components/layout/Layout";
 import ScrollToTop from "@/components/ScrollToTop";
 import Dashboard from "./pages/Dashboard";
+import AiPlanner from "./pages/AiPlanner";
 import Activities from "./pages/Activities";
 import TripPlanner from "./pages/TripPlanner";
 import TripDetail from "./pages/TripDetail";
@@ -37,6 +38,7 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/ai-planner" element={<AiPlanner />} />
             <Route path="/activities" element={<Activities />} />
             <Route path="/trip-planner" element={<TripPlanner />} />
             <Route path="/trip/:id" element={<TripDetail />} />

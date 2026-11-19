@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Link, useLocation } from "react-router-dom";
 import {
   Bot, Bus, Car, Compass, Home, Hotel,
-  Menu, Package, Plane, Shield, Smartphone,
+  Menu, Package, Plane, Route, Shield, Smartphone,
   TrainFront, UtensilsCrossed, X, ChevronDown, User,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -14,7 +14,8 @@ const mainLinks = [
   { to: "/coliving", label: "Coliving", icon: Home },
   { to: "/packages", label: "Paquetes", icon: Package },
   { to: "/flights", label: "Vuelos", icon: Plane },
-  { to: "/trip-planner", label: "Trip Planner", icon: Bot },
+  { to: "/ai-planner", label: "AI Planner", icon: Bot },
+  { to: "/trip-planner", label: "Trip Planner", icon: Route },
 ];
 
 const moreLinks = [

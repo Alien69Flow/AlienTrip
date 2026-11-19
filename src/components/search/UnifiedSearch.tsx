@@ -6,6 +6,7 @@ import {
   Plane, Shield, Smartphone, TrainFront, UtensilsCrossed,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { logSearch } from "@/lib/searchLog";
 
 const categories = [
   { id: "all", label: "Todo", icon: Search, path: "/" },
@@ -64,6 +65,7 @@ const UnifiedSearch = () => {
   }, []);
 
   const handleSearch = () => {
+    logSearch({ category, destination, dates, travelers });
     const cat = categories.find((c) => c.id === category);
     const path = cat?.path || "/";
     const params = new URLSearchParams();
