@@ -1,15 +1,9 @@
 import { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import { Bot, Send, Sparkles, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
-import { supabase } from "@/lib/supabase";
-
-type Message = {
-  role: "user" | "assistant";
-  content: string;
-};
+import { streamAitorChat, persistAitorTurn, type AitorMessage } from "@/lib/aitor";
 
 const suggestions = [
   "¿Qué puedo visitar en Barcelona en 3 días?",
@@ -18,94 +12,69 @@ const suggestions = [
   "Ideas de actividades para una familia en Lisboa",
 ];
 
-// Simple rule-based reply engine; the conversations are stored in the
-// aitor_sessions / aitor_messages tables so history survives reloads.
-const buildReply = (question: string, turns: number): string => {
-  const q = question.toLowerCase();
-  if (q.includes("tokio") || q.includes("tokyo")) {
-    return "Tokio mezcla tradición y futuro: templos en Asakusa, el cruce de Shibuya, el santuario de Meiji y el mercado de Tsukiji. Con 2000€ puedes cubrir vuelo, un hotel sencillo y comidas por 6-7 días si reservas con antelación.";
-  }
-  if (q.includes("barcelona")) {
-    return "En 3 días en Barcelona: día 1 Sagrada Familia y Gótico, día 2 Park Güell, Gràcia y la Barceloneta, día 3 Montjuïc y el born para tapas. Compra las entradas de los monumentos online para evitar colas.";
-  }
-  if (q.includes("surf") || q.includes("méxico") || q.includes("mexico")) {
-    return "Para surf en México, los clásicos son Puerto Escondido (olas potentes), Sayulita (ideal para aprender) y Zicatela para nivel avanzado. La mejor temporada va de abril a octubre.";
-  }
-  if (q.includes("lisboa") || q.includes("familia")) {
-    return "En Lisboa con familia: tranvía 28, Oceanário, Torre de Belém con pasteles de Belém, y el Jardín Zoológico. La ciudad es cuesta arriba, así que combina transportes públicos con paradas en parque.";
-  }
-  if (q.includes("presupuesto") || q.includes("barato") || q.includes("económico")) {
-    return "Para ajustar presupuesto: vuela en martes o miércoles, reserva alojamiento con cocina, come en mercados locales y mueve el centro de gravedad a barrios fuera del casco histórico. Ahorrarás un 30-40% fácilmente.";
-  }
-  if (q.includes("hola") || q.includes("buenas")) {
-    return "¡Hola! Soy Aitor, tu asistente de viajes. Dime un destino, fechas o el tipo de plan que te apetece y te preparo ideas.";
-  }
-  if (turns > 2) {
-    return "Cuéntame un destino concreto (ciudad o país) y si tienes fechas aproximadas, y te armo una propuesta con actividades, dónde dormir y presupuesto orientativo.";
-  }
-  return "Buena pregunta. Dime destino y fechas aproximadas y te propongo itinerario, dónde alojarte y qué presupuesto estimar. También puedo orientarte entre vuelos, trenes, coliving o eSIM.";
-};
-
 const AiPlanner = () => {
-  const [sessionId, setSessionId] = useState<string | null>(null);
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: "assistant",
-      content:
-        "¡Hola! Soy Aitor, el asistente de AlienTrip. Cuéntame a dónde quieres ir, con quién y cuándo, y te ayudo a planearlo.",
-    },
-  ]);
+  const [messages, setMessages] = useState<AitorMessage[]>([]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const sessionIdRef = useRef<string | null>(null);
   const bottomRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages, loading]);
 
-  const ensureSession = async (): Promise<string | null> => {
-    if (sessionId) return sessionId;
-    const { data, error } = await supabase
-      .from("aitor_sessions")
-      .insert({})
-      .select("id")
-      .single();
-    if (error || !data) {
-      console.error(error);
-      return null;
-    }
-    setSessionId(data.id);
-    return data.id;
-  };
-
-  const persistMessage = (sid: string, role: Message["role"], content: string) => {
-    supabase
-      .from("aitor_messages")
-      .insert({ session_id: sid, role, content })
-      .then(({ error }) => {
-        if (error) console.error(error);
-      });
-  };
-
   const send = async (text: string) => {
     const question = text.trim();
     if (!question || loading) return;
 
-    setMessages((prev) => [...prev, { role: "user", content: question }]);
+    const history: AitorMessage[] = [...messages, { role: "user", content: question }];
+    setMessages([...history, { role: "assistant", content: "" }]);
     setInput("");
     setLoading(true);
 
-    const sid = await ensureSession();
-    if (sid) persistMessage(sid, "user", question);
+    sessionIdRef.current = await persistAitorTurn(
+      sessionIdRef.current,
+      "user",
+      question
+    );
 
-    const userTurns = messages.filter((m) => m.role === "user").length + 1;
-    const reply = buildReply(question, userTurns);
-
-    setTimeout(() => {
-      setMessages((prev) => [...prev, { role: "assistant", content: reply }]);
-      if (sid) persistMessage(sid, "assistant", reply);
+    try {
+      await streamAitorChat(history, (chunk) => {
+        setMessages((prev) => {
+          const copy = [...prev];
+          const last = copy[copy.length - 1];
+          copy[copy.length - 1] = { ...last, content: last.content + chunk };
+          return copy;
+        });
+      });
+    } catch {
+      setMessages((prev) => {
+        const copy = [...prev];
+        copy[copy.length - 1] = {
+          role: "assistant",
+          content:
+            "Lo siento, no he podido conectar con Aitor en este momento. Inténtalo de nuevo en unos segundos.",
+        };
+        return copy;
+      });
+    } finally {
       setLoading(false);
-    }, 600);
+      const finalMsgs = history;
+      const reply = finalMsgs[finalMsgs.length - 1];
+      // reply content is streamed above; persist once complete using latest state
+      setMessages((prev) => {
+        const last = prev[prev.length - 1];
+        if (last.content) {
+          persistAitorTurn(sessionIdRef.current, "assistant", last.content).then(
+            (sid) => {
+              sessionIdRef.current = sid;
+            }
+          );
+        }
+        return prev;
+      });
+      void reply;
+    }
   };
 
   return (
@@ -120,12 +89,20 @@ const AiPlanner = () => {
             Habla con <span className="neon-text">Aitor</span>
           </h1>
           <p className="text-muted-foreground text-sm">
-            Tu asistente de viajes: itinerarios, ideas y presupuesto
+            Tu asistente de viajes con IA en tiempo real: itinerarios, ideas y presupuesto
           </p>
         </div>
 
         <Card className="glass border-none flex-1 flex flex-col overflow-hidden">
           <CardContent className="flex-1 overflow-y-auto p-4 space-y-4">
+            {messages.length === 0 && (
+              <div className="text-center text-muted-foreground py-8">
+                <Bot size={40} className="mx-auto mb-3 opacity-30" />
+                <p className="text-sm">
+                  Pregunta lo que quieras sobre tu próximo viaje
+                </p>
+              </div>
+            )}
             {messages.map((msg, i) => (
               <div
                 key={i}
@@ -141,32 +118,20 @@ const AiPlanner = () => {
                   {msg.role === "user" ? <User size={15} /> : <Bot size={15} />}
                 </div>
                 <div
-                  className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed ${
+                  className={`max-w-[80%] rounded-2xl px-4 py-3 text-sm leading-relaxed whitespace-pre-wrap ${
                     msg.role === "user"
                       ? "bg-primary text-primary-foreground rounded-tr-sm"
                       : "bg-secondary/60 text-foreground rounded-tl-sm"
                   }`}
                 >
-                  {msg.content}
+                  {msg.content || (loading && i === messages.length - 1 ? "…" : msg.content)}
                 </div>
               </div>
             ))}
-            {loading && (
-              <div className="flex gap-3">
-                <div className="w-8 h-8 rounded-full bg-primary/20 text-primary flex items-center justify-center">
-                  <Bot size={15} />
-                </div>
-                <div className="bg-secondary/60 rounded-2xl rounded-tl-sm px-4 py-3 flex gap-1.5 items-center">
-                  <span className="w-2 h-2 rounded-full bg-muted-foreground animate-bounce" />
-                  <span className="w-2 h-2 rounded-full bg-muted-foreground animate-bounce [animation-delay:0.15s]" />
-                  <span className="w-2 h-2 rounded-full bg-muted-foreground animate-bounce [animation-delay:0.3s]" />
-                </div>
-              </div>
-            )}
             <div ref={bottomRef} />
           </CardContent>
 
-          {messages.length <= 1 && (
+          {messages.length === 0 && (
             <div className="px-4 pb-2 flex flex-wrap gap-2">
               {suggestions.map((s) => (
                 <button
@@ -194,7 +159,12 @@ const AiPlanner = () => {
                 placeholder="Pregunta sobre tu próximo viaje..."
                 className="bg-background/50 flex-1"
               />
-              <Button type="submit" size="icon" className="neon-glow shrink-0" disabled={loading || !input.trim()}>
+              <Button
+                type="submit"
+                size="icon"
+                className="neon-glow shrink-0"
+                disabled={loading || !input.trim()}
+              >
                 <Send size={16} />
               </Button>
             </form>
