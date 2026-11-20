@@ -1,6 +1,8 @@
 import { Package, Plane, Hotel, Compass, Star, Calendar } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import ProviderGrid from "@/components/search/ProviderGrid";
+import { packageProviders } from "@/lib/partnerLinks";
 
 const mockPackages = [
   { id: 1, title: "Roma Clásica", days: 5, includes: ["Vuelo", "Hotel 4★", "Tour Coliseo"], price: 599, originalPrice: 780, rating: 4.8, image: "🇮🇹" },
@@ -19,6 +21,13 @@ const Packages = () => (
         <h1 className="text-3xl font-display font-bold text-foreground">Paquetes</h1>
       </div>
       <p className="text-muted-foreground mb-8">Vuelo + hotel + actividades combinados al mejor precio</p>
+
+      <ProviderGrid providers={packageProviders} />
+
+      <div className="flex items-center gap-2 mt-12 mb-4">
+        <h2 className="text-lg font-display font-bold text-foreground">Inspiración</h2>
+        <span className="text-[10px] px-2 py-0.5 rounded-full bg-secondary/60 text-muted-foreground">demo</span>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {mockPackages.map((pkg, i) => (

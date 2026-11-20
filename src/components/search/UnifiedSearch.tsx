@@ -7,6 +7,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { logSearch } from "@/lib/searchLog";
+import { useI18n } from "@/lib/i18n";
 
 const categories = [
   { id: "all", label: "Todo", icon: Search, path: "/" },
@@ -39,6 +40,7 @@ const popularDestinations = [
 
 const UnifiedSearch = () => {
   const navigate = useNavigate();
+  const { t } = useI18n();
   const [category, setCategory] = useState("all");
   const [destination, setDestination] = useState("");
   const [dates, setDates] = useState("");
@@ -116,7 +118,7 @@ const UnifiedSearch = () => {
               value={destination}
               onChange={(e) => { setDestination(e.target.value); setShowSuggestions(true); }}
               onFocus={() => setShowSuggestions(true)}
-              placeholder="¿A dónde vas?"
+              placeholder={t("search.where")}
               className="w-full pl-9 pr-3 py-3.5 rounded-xl bg-secondary/50 hover:bg-secondary/80 focus:bg-secondary/80 border-0 outline-none transition-colors text-foreground placeholder:text-muted-foreground text-sm"
             />
             {showSuggestions && filteredDestinations.length > 0 && (
@@ -142,7 +144,7 @@ const UnifiedSearch = () => {
               type="text"
               value={dates}
               onChange={(e) => setDates(e.target.value)}
-              placeholder="¿Cuándo?"
+              placeholder={t("search.when")}
               className="w-full pl-9 pr-3 py-3.5 rounded-xl bg-secondary/50 hover:bg-secondary/80 focus:bg-secondary/80 border-0 outline-none transition-colors text-foreground placeholder:text-muted-foreground text-sm"
             />
           </div>
@@ -154,7 +156,7 @@ const UnifiedSearch = () => {
               className="w-full h-full min-h-[50px] rounded-xl neon-glow text-sm font-semibold gap-2"
             >
               <Search size={16} />
-              Buscar
+              {t("search.cta")}
             </Button>
           </div>
         </div>

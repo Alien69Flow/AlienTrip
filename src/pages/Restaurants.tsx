@@ -1,6 +1,8 @@
 import { UtensilsCrossed, MapPin, Star, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import ProviderGrid from "@/components/search/ProviderGrid";
+import { restaurantProviders } from "@/lib/partnerLinks";
 
 const mockRestaurants = [
   { id: 1, name: "La Barraca", city: "Barcelona", cuisine: "Paella / Mariscos", price: "€€", rating: 4.7, reviews: 2340 },
@@ -19,6 +21,13 @@ const Restaurants = () => (
         <h1 className="text-3xl font-display font-bold text-foreground">Restaurantes</h1>
       </div>
       <p className="text-muted-foreground mb-8">Descubre la mejor gastronomía local en cada destino</p>
+
+      <ProviderGrid providers={restaurantProviders} kind="book" />
+
+      <div className="flex items-center gap-2 mt-12 mb-4">
+        <h2 className="text-lg font-display font-bold text-foreground">Inspiración</h2>
+        <span className="text-[10px] px-2 py-0.5 rounded-full bg-secondary/60 text-muted-foreground">demo</span>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {mockRestaurants.map((r, i) => (

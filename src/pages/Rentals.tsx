@@ -1,6 +1,8 @@
 import { Car, Fuel, Users, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import ProviderGrid from "@/components/search/ProviderGrid";
+import { carRentalProviders } from "@/lib/partnerLinks";
 
 const PLACEHOLDER = "/placeholder.svg";
 
@@ -21,6 +23,13 @@ const Rentals = () => (
         <h1 className="text-3xl font-display font-bold text-foreground">Alquileres</h1>
       </div>
       <p className="text-muted-foreground mb-8">Coches, motos, bicicletas y campers para tu aventura</p>
+
+      <ProviderGrid providers={carRentalProviders} />
+
+      <div className="flex items-center gap-2 mt-12 mb-6">
+        <h2 className="text-lg font-display font-bold text-foreground">Inspiración</h2>
+        <span className="text-[10px] px-2 py-0.5 rounded-full bg-secondary/60 text-muted-foreground">demo</span>
+      </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
         {mockRentals.map((r, i) => (

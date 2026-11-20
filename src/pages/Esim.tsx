@@ -1,6 +1,8 @@
 import { Smartphone, Wifi, Globe, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import ProviderGrid from "@/components/search/ProviderGrid";
+import { esimProviders } from "@/lib/partnerLinks";
 
 const mockEsims = [
   { id: 1, provider: "Holafly", region: "Europa", data: "Ilimitados", days: 15, price: 34, rating: 4.6 },
@@ -19,6 +21,13 @@ const Esim = () => (
         <h1 className="text-3xl font-display font-bold text-foreground">eSIM</h1>
       </div>
       <p className="text-muted-foreground mb-8">Conectividad instantánea en cualquier destino</p>
+
+      <ProviderGrid providers={esimProviders} />
+
+      <div className="flex items-center gap-2 mt-12 mb-4">
+        <h2 className="text-lg font-display font-bold text-foreground">Planes de ejemplo</h2>
+        <span className="text-[10px] px-2 py-0.5 rounded-full bg-secondary/60 text-muted-foreground">demo</span>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {mockEsims.map((e, i) => (

@@ -1,6 +1,8 @@
 import { Bus, MapPin, Clock, Star, Users } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import ProviderGrid from "@/components/search/ProviderGrid";
+import { transferProviders } from "@/lib/partnerLinks";
 
 const mockTransfers = [
   { id: 1, provider: "GetTransfer", route: "Aeropuerto BCN → Centro", type: "Privado", capacity: 3, price: 39, duration: "25 min", rating: 4.5 },
@@ -19,6 +21,13 @@ const Transfers = () => (
         <h1 className="text-3xl font-display font-bold text-foreground">Transfers</h1>
       </div>
       <p className="text-muted-foreground mb-8">Traslados aeropuerto-ciudad sin complicaciones</p>
+
+      <ProviderGrid providers={transferProviders} />
+
+      <div className="flex items-center gap-2 mt-12 mb-4">
+        <h2 className="text-lg font-display font-bold text-foreground">Inspiración</h2>
+        <span className="text-[10px] px-2 py-0.5 rounded-full bg-secondary/60 text-muted-foreground">demo</span>
+      </div>
 
       <div className="space-y-4">
         {mockTransfers.map((t, i) => (

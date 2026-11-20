@@ -1,6 +1,8 @@
 import { Shield, Heart, Plane, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import ProviderGrid from "@/components/search/ProviderGrid";
+import { insuranceProviders } from "@/lib/partnerLinks";
 
 const mockInsurance = [
   { id: 1, provider: "SafetyWing", plan: "Nomad Insurance", coverage: "Médico + Viaje", price: 42, perMonth: true, rating: 4.6, highlight: "Popular nómadas" },
@@ -19,6 +21,13 @@ const Insurance = () => (
         <h1 className="text-3xl font-display font-bold text-foreground">Seguros de viaje</h1>
       </div>
       <p className="text-muted-foreground mb-8">Viaja protegido con los mejores seguros comparados</p>
+
+      <ProviderGrid providers={insuranceProviders} />
+
+      <div className="flex items-center gap-2 mt-12 mb-4">
+        <h2 className="text-lg font-display font-bold text-foreground">Planes de ejemplo</h2>
+        <span className="text-[10px] px-2 py-0.5 rounded-full bg-secondary/60 text-muted-foreground">demo</span>
+      </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {mockInsurance.map((ins, i) => (

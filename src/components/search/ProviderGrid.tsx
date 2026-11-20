@@ -2,16 +2,21 @@ import { useSearchParams } from "react-router-dom";
 import { ExternalLink, Zap } from "lucide-react";
 import { motion } from "framer-motion";
 import type { SearchCriteria } from "@/lib/partnerLinks";
+import { useI18n } from "@/lib/i18n";
 
 type Props = {
-  title: string;
-  subtitle: string;
+  kind?: "compare" | "book";
+  title?: string;
+  subtitle?: string;
   providers: { id: string; name: string; color: string; build: (c: SearchCriteria) => string }[];
 };
 
 // Grid of real provider deep-links; every button opens the provider's own
 // live search with the user's criteria prefilled.
-const ProviderGrid = ({ title, subtitle, providers }: Props) => {
+const ProviderGrid = ({ kind = "compare", title, subtitle, providers }: Props) => {
+  const { t } = useI18n();
+  const resolvedTitle = title ?? t(kind === "book" ? "providers.book" : "providers.compare");
+  const resolvedSub = subtitle ?? t(kind === "book" ? "providers.book.sub" : "providers.compare.sub");
   const [searchParams] = useSearchParams();
   const criteria: SearchCriteria = {
     destination: searchParams.get("destination") || "",
@@ -23,9 +28,9 @@ const ProviderGrid = ({ title, subtitle, providers }: Props) => {
     <section className="mt-12">
       <div className="flex items-center gap-2 mb-1">
         <Zap size={16} className="text-primary" />
-        <h2 className="text-lg font-display font-bold text-foreground">{title}</h2>
+        <h2 className="text-lg font-display font-bold text-foreground">{resolvedTitle}</h2>
       </div>
-      <p className="text-xs text-muted-foreground mb-4">{subtitle}</p>
+      <p className="text-xs text-muted-foreground mb-4">{resolvedSub}</p>
       <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
         {providers.map((p, i) => (
           <motion.a

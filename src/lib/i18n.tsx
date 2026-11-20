@@ -32,7 +32,7 @@ const messages: Record<Lang, Record<string, string>> = {
     "nav.signin": "Sign in",
     "nav.signup": "Sign up",
     "nav.profile": "My Profile",
-    "hero.badge": "18 providers · Flights · Hotels · Trains · Activities · Coliving · eSIM and more",
+    "hero.badge": "60+ providers · Flights · Hotels · Trains · Activities · Coliving · eSIM and more",
     "hero.title1": "We compare everything.",
     "hero.title2": "You just travel.",
     "hero.subtitle":
@@ -91,7 +91,7 @@ const messages: Record<Lang, Record<string, string>> = {
     "nav.signin": "Iniciar sesión",
     "nav.signup": "Registrarse",
     "nav.profile": "Mi Perfil",
-    "hero.badge": "18 proveedores · Vuelos · Hoteles · Trenes · Actividades · Coliving · eSIM y más",
+    "hero.badge": "60+ proveedores · Vuelos · Hoteles · Trenes · Actividades · Coliving · eSIM y más",
     "hero.title1": "Comparamos todo.",
     "hero.title2": "Tú solo viajas.",
     "hero.subtitle":
@@ -150,7 +150,7 @@ const messages: Record<Lang, Record<string, string>> = {
     "nav.signin": "Se connecter",
     "nav.signup": "S'inscrire",
     "nav.profile": "Mon profil",
-    "hero.badge": "18 partenaires · Vols · Hôtels · Trains · Activités · Coliving · eSIM et plus",
+    "hero.badge": "60+ partenaires · Vols · Hôtels · Trains · Activités · Coliving · eSIM et plus",
     "hero.title1": "On compare tout.",
     "hero.title2": "Vous voyagez.",
     "hero.subtitle":
@@ -209,7 +209,7 @@ const messages: Record<Lang, Record<string, string>> = {
     "nav.signin": "Entrar",
     "nav.signup": "Cadastrar",
     "nav.profile": "Meu perfil",
-    "hero.badge": "18 parceiros · Voos · Hotéis · Trens · Atividades · Coliving · eSIM e mais",
+    "hero.badge": "60+ parceiros · Voos · Hotéis · Trens · Atividades · Coliving · eSIM e mais",
     "hero.title1": "Comparamos tudo.",
     "hero.title2": "Você só viaja.",
     "hero.subtitle":
@@ -268,7 +268,7 @@ const messages: Record<Lang, Record<string, string>> = {
     "nav.signin": "登录",
     "nav.signup": "注册",
     "nav.profile": "我的资料",
-    "hero.badge": "18 家供应商 · 机票 · 酒店 · 火车 · 活动 · 共享居住 · eSIM 等",
+    "hero.badge": "60+ 家供应商 · 机票 · 酒店 · 火车 · 活动 · 共享居住 · eSIM 等",
     "hero.title1": "我们全网比价。",
     "hero.title2": "你只管出发。",
     "hero.subtitle":
@@ -327,7 +327,7 @@ const messages: Record<Lang, Record<string, string>> = {
     "nav.signin": "साइन इन",
     "nav.signup": "साइन अप",
     "nav.profile": "मेरी प्रोफ़ाइल",
-    "hero.badge": "18 प्रदाता · फ्लाइट्स · होटल · ट्रेनें · गतिविधियाँ · कोलिविंग · eSIM और भी बहुत कुछ",
+    "hero.badge": "60+ प्रदाता · फ्लाइट्स · होटल · ट्रेनें · गतिविधियाँ · कोलिविंग · eSIM और भी बहुत कुछ",
     "hero.title1": "हम सबकी तुलना करते हैं।",
     "hero.title2": "आप बस यात्रा करें।",
     "hero.subtitle":

@@ -11,7 +11,7 @@ const HowItWorks = () => {
     { icon: TicketCheck, title: t("how.step4"), desc: t("how.step4.desc") },
   ];
   const stats = [
-    { value: "18+", label: t("how.stats.providers") },
+    { value: "60+", label: t("how.stats.providers") },
     { value: "12", label: t("how.stats.services") },
     { value: "0 €", label: t("how.stats.fees") },
     { value: "24/7", label: t("how.stats.assistant") },
