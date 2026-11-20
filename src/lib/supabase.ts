@@ -1,9 +1,15 @@
-import { createClient } from "@supabase/supabase-js";
+import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string;
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL as string | undefined;
+const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);
+
+// Null-safe client: when the connection data is missing the app still runs,
+// with data persistence disabled instead of crashing on startup.
+export const supabase: SupabaseClient | null = isSupabaseConfigured
+  ? createClient(supabaseUrl as string, supabaseAnonKey as string)
+  : null;
 
 const SESSION_KEY = "alientrip_session_id";
 
@@ -18,6 +24,7 @@ export const getSessionId = (): string => {
 
 export const ensureSession = async (): Promise<string> => {
   const id = getSessionId();
+  if (!supabase) return id;
   const { error } = await supabase
     .from("aitor_sessions")
     .upsert({ id }, { ignoreDuplicates: true });
