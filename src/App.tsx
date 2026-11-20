@@ -5,6 +5,8 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { UserProvider } from "@/contexts/UserContext";
 import Layout from "@/components/layout/Layout";
+import AitorBubble from "@/components/aitor/AitorBubble";
+import SearchResults from "./pages/SearchResults";
 import ScrollToTop from "@/components/ScrollToTop";
 import Dashboard from "./pages/Dashboard";
 import AiPlanner from "./pages/AiPlanner";
@@ -33,6 +35,7 @@ const App = () => (
         <Toaster />
         <Sonner />
         <BrowserRouter>
+          <AitorBubble />
           <ScrollToTop />
           <Layout>
             <Routes>
