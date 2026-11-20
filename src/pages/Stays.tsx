@@ -7,6 +7,8 @@ import { FilterSidebar } from "@/components/filters/FilterSidebar";
 import { FilterBar, ViewMode } from "@/components/filters/FilterBar";
 import { MapView } from "@/components/filters/MapView";
 import { FavoriteButton } from "@/components/FavoriteButton";
+import ProviderGrid from "@/components/search/ProviderGrid";
+import { stayProviders } from "@/lib/partnerLinks";
 import { BookingModal } from "@/components/booking/BookingModal";
 
 const PLACEHOLDER = "/placeholder.svg";
@@ -125,6 +127,17 @@ const Stays = () => {
             <> — resultados para <span className="text-foreground font-medium">{destination}</span></>
           )}
         </p>
+
+        <ProviderGrid
+          title="Compara precios reales ahora"
+          subtitle="Disponibilidad y tarifas en vivo de Airbnb, Booking.com, Expedia y más — con tu destino ya buscado"
+          providers={stayProviders}
+        />
+
+        <div className="flex items-center gap-2 mt-10 mb-4">
+          <h2 className="text-lg font-display font-bold text-foreground">Inspiración</h2>
+          <span className="text-[10px] px-2 py-0.5 rounded-full bg-secondary/60 text-muted-foreground">demo</span>
+        </div>
 
         <FilterBar 
           viewMode={viewMode}

@@ -1,7 +1,9 @@
-import { Plane, ArrowRight, Clock, Star } from "lucide-react";
+import { Plane, ArrowRight, Clock, Star, SearchX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
 import { FavoriteButton } from "@/components/FavoriteButton";
+import ProviderGrid from "@/components/search/ProviderGrid";
+import { flightProviders } from "@/lib/partnerLinks";
 
 const mockFlights = [
   { id: 1, airline: "Iberia", from: "MAD", to: "BCN", price: 49, duration: "1h 15m", rating: 4.5, stops: 0 },
@@ -19,7 +21,18 @@ const Flights = () => (
         <Plane className="text-blue-400" size={28} />
         <h1 className="text-3xl font-display font-bold text-foreground">Vuelos</h1>
       </div>
-      <p className="text-muted-foreground mb-8">Compara y encuentra los mejores precios en vuelos</p>
+      <p className="text-muted-foreground mb-8">Compara precios reales en vivo con nuestros proveedores</p>
+
+      <ProviderGrid
+        title="Compara precios reales ahora"
+        subtitle="Cada botón abre la búsqueda en vivo del proveedor con tu destino — precios y disponibilidad reales del mercado"
+        providers={flightProviders}
+      />
+
+      <div className="flex items-center gap-2 mt-12 mb-4">
+        <h2 className="text-lg font-display font-bold text-foreground">Ejemplos de rutas populares</h2>
+        <span className="text-[10px] px-2 py-0.5 rounded-full bg-secondary/60 text-muted-foreground">demo</span>
+      </div>
 
       <div className="space-y-4">
         {mockFlights.map((f, i) => (

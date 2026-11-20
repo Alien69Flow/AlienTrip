@@ -3,6 +3,8 @@ import { useSearchParams } from "react-router-dom";
 import { Compass, Clock, Star, MapPin, SearchX } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion } from "framer-motion";
+import ProviderGrid from "@/components/search/ProviderGrid";
+import { activityProviders } from "@/lib/partnerLinks";
 
 const PLACEHOLDER = "/placeholder.svg";
 
@@ -36,6 +38,17 @@ const Activities = () => {
           <> — resultados para <span className="text-foreground font-medium">{destination}</span></>
         )}
       </p>
+
+      <ProviderGrid
+        title="Reserva con proveedores reales"
+        subtitle="Ofertas y disponibilidad en vivo de GetYourGuide, Civitatis, Viator y más — con tu destino ya buscado"
+        providers={activityProviders}
+      />
+
+      <div className="flex items-center gap-2 mt-12 mb-6">
+        <h2 className="text-lg font-display font-bold text-foreground">Inspiración</h2>
+        <span className="text-[10px] px-2 py-0.5 rounded-full bg-secondary/60 text-muted-foreground">demo</span>
+      </div>
 
       {visible.length === 0 ? (
         <div className="text-center py-20 text-muted-foreground">
