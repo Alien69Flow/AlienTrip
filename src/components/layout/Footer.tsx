@@ -2,7 +2,8 @@ import { Link } from "react-router-dom";
 import {
   Bot, Bus, Car, Compass, Home, Hotel,
   Package, Plane, Shield, Smartphone,
-  TrainFront, UtensilsCrossed, Globe, Mail, Twitter, Instagram,
+  TrainFront, UtensilsCrossed, Globe, Twitter, Instagram,
+  Send, Github, MessageCircle,
   CreditCard, Lock, Headphones,
 } from "lucide-react";
 
@@ -24,13 +25,6 @@ const moreServiceLinks = [
   { to: "/ai-planner", label: "AI Planner", icon: Bot },
 ];
 
-const companyLinks = [
-  { label: "Sobre nosotros", href: "#" },
-  { label: "Blog", href: "#" },
-  { label: "Contacto", href: "#" },
-  { label: "Trabaja con nosotros", href: "#" },
-];
-
 const legalLinks = [
   { label: "Privacidad", href: "#" },
   { label: "Términos de uso", href: "#" },
@@ -38,10 +32,29 @@ const legalLinks = [
 ];
 
 const socialLinks = [
-  { icon: Twitter, href: "#", label: "Twitter" },
-  { icon: Instagram, href: "#", label: "Instagram" },
-  { icon: Globe, href: "#", label: "Web" },
-  { icon: Mail, href: "#", label: "Email" },
+  { icon: Twitter, href: "https://x.com/alien69flow", label: "X (Twitter)" },
+  { icon: Instagram, href: "https://instagram.com/alien69flow", label: "Instagram" },
+  { icon: Send, href: "https://t.me/AlienFlow", label: "Telegram" },
+  { icon: Github, href: "https://github.com/Alien69Flow", label: "GitHub" },
+  { icon: MessageCircle, href: "https://warpcast.com/alien69flow", label: "Farcaster" },
+  { icon: Globe, href: "https://alienflow.space", label: "Web" },
+];
+
+const communityLinks = [
+  { label: "Discord", href: "#", hint: "Soon" },
+  { label: "Telegram", href: "https://t.me/AlienFlow" },
+  { label: "Reddit — u/Alien69Flow", href: "https://reddit.com/u/Alien69Flow" },
+  { label: "TikTok — @alien69flow", href: "https://tiktok.com/@alien69flow" },
+  { label: "Threads — @alien69flow", href: "https://threads.net/@alien69flow" },
+  { label: "Facebook — Alien69Flow", href: "https://facebook.com/Alien69Flow" },
+  { label: "DoraHacks — Alien69Flow", href: "https://dorahacks.io" },
+  { label: "HackMD — @Alien69Flow", href: "https://hackmd.io/@Alien69Flow" },
+];
+
+const devLinks = [
+  { label: "GitHub — Alien69Flow", href: "https://github.com/Alien69Flow" },
+  { label: "Farcaster — @alien69flow", href: "https://warpcast.com/alien69flow" },
+  { label: "X — @alien69flow", href: "https://x.com/alien69flow" },
 ];
 
 const trustBadges = [
@@ -66,7 +79,7 @@ const Footer = () => {
           ))}
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-10">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-10">
           {/* Brand */}
           <div className="col-span-2 md:col-span-1">
             <span className="text-lg font-display font-bold bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">
@@ -119,11 +132,36 @@ const Footer = () => {
 
           {/* Company */}
           <div>
-            <h4 className="font-display font-semibold text-foreground mb-4 text-xs uppercase tracking-wider">Compañía</h4>
+            <h4 className="font-display font-semibold text-foreground mb-4 text-xs uppercase tracking-wider">Comunidad DAO</h4>
             <ul className="space-y-2.5">
-              {companyLinks.map((l) => (
+              {communityLinks.map((l) => (
                 <li key={l.label}>
-                  <a href={l.href} className="text-xs text-muted-foreground hover:text-primary transition-colors duration-200">
+                  <a
+                    href={l.href}
+                    target={l.href.startsWith("http") ? "_blank" : undefined}
+                    rel="noopener noreferrer"
+                    className="text-xs text-muted-foreground hover:text-primary transition-colors duration-200"
+                  >
+                    {l.label}
+                    {l.hint && <span className="ml-1.5 text-[10px] text-primary/70">({l.hint})</span>}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Dev & official channels */}
+          <div>
+            <h4 className="font-display font-semibold text-foreground mb-4 text-xs uppercase tracking-wider">Desarrollo</h4>
+            <ul className="space-y-2.5">
+              {devLinks.map((l) => (
+                <li key={l.label}>
+                  <a
+                    href={l.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-xs text-muted-foreground hover:text-primary transition-colors duration-200"
+                  >
                     {l.label}
                   </a>
                 </li>
@@ -131,7 +169,7 @@ const Footer = () => {
             </ul>
           </div>
 
-          {/* Legal */}
+                  {/* Legal */}
           <div>
             <h4 className="font-display font-semibold text-foreground mb-4 text-xs uppercase tracking-wider">Legal</h4>
             <ul className="space-y-2.5">
@@ -144,6 +182,33 @@ const Footer = () => {
               ))}
             </ul>
           </div>
+        </div>
+
+        {/* Official channels strip */}
+        <div className="mt-10 flex flex-wrap justify-center items-center gap-x-4 gap-y-2">
+          <span className="text-[11px] uppercase tracking-wider text-muted-foreground/70">Official Channels</span>
+          {[
+            ["X", "https://x.com/alien69flow"],
+            ["Instagram", "https://instagram.com/alien69flow"],
+            ["Telegram", "https://t.me/AlienFlow"],
+            ["GitHub", "https://github.com/Alien69Flow"],
+            ["Farcaster", "https://warpcast.com/alien69flow"],
+            ["Reddit", "https://reddit.com/u/Alien69Flow"],
+            ["TikTok", "https://tiktok.com/@alien69flow"],
+            ["Threads", "https://threads.net/@alien69flow"],
+            ["Facebook", "https://facebook.com/Alien69Flow"],
+          ].map(([label, href]) => (
+            <a
+              key={label}
+              href={href}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[11px] text-muted-foreground hover:text-primary transition-colors"
+            >
+              {label}
+            </a>
+          ))}
+          <span className="text-[11px] text-muted-foreground/50">Discord · GitBook · LinkedIn — Soon</span>
         </div>
 
         {/* Bottom bar */}
