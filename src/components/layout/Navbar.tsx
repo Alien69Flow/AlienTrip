@@ -3,36 +3,39 @@ import { Link, useLocation } from "react-router-dom";
 import {
   Bot, Bus, Car, Compass, Home, Hotel,
   Menu, Package, Plane, Route, Shield, Smartphone,
-  TrainFront, UtensilsCrossed, X, ChevronDown, User,
+  TrainFront, UtensilsCrossed, X, ChevronDown, User, Globe,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { motion, AnimatePresence } from "framer-motion";
-
-const mainLinks = [
-  { to: "/activities", label: "Actividades", icon: Compass },
-  { to: "/stays", label: "Alojamiento", icon: Hotel },
-  { to: "/coliving", label: "Coliving", icon: Home },
-  { to: "/packages", label: "Paquetes", icon: Package },
-  { to: "/flights", label: "Vuelos", icon: Plane },
-  { to: "/ai-planner", label: "AI Planner", icon: Bot },
-  { to: "/trip-planner", label: "Trip Planner", icon: Route },
-];
-
-const moreLinks = [
-  { to: "/rentals", label: "Alquileres", icon: Car },
-  { to: "/esim", label: "eSIM", icon: Smartphone },
-  { to: "/restaurants", label: "Restaurantes", icon: UtensilsCrossed },
-  { to: "/insurance", label: "Seguros", icon: Shield },
-  { to: "/transfers", label: "Transfers", icon: Bus },
-  { to: "/trains", label: "Trenes", icon: TrainFront },
-];
-
-const allLinks = [...mainLinks, ...moreLinks].sort((a, b) => a.label.localeCompare(b.label));
+import { useI18n, LANGS } from "@/lib/i18n";
 
 const Navbar = () => {
   const location = useLocation();
+  const { t, lang, setLang } = useI18n();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [moreOpen, setMoreOpen] = useState(false);
+  const [langOpen, setLangOpen] = useState(false);
+
+  const navKey = (to: string) =>
+    `nav.${to === "/ai-planner" ? "aiPlanner" : to === "/trip-planner" ? "tripPlanner" : to.slice(1)}`;
+  const mainLinks = [
+    { to: "/activities", label: t("nav.activities"), icon: Compass },
+    { to: "/stays", label: t("nav.stays"), icon: Hotel },
+    { to: "/coliving", label: t("nav.coliving"), icon: Home },
+    { to: "/packages", label: t("nav.packages"), icon: Package },
+    { to: "/flights", label: t("nav.flights"), icon: Plane },
+    { to: "/ai-planner", label: t("nav.aiPlanner"), icon: Bot },
+    { to: "/trip-planner", label: t("nav.tripPlanner"), icon: Route },
+  ];
+  const moreLinks = [
+    { to: "/rentals", label: t("nav.rentals"), icon: Car },
+    { to: "/esim", label: t("nav.esim"), icon: Smartphone },
+    { to: "/restaurants", label: t("nav.restaurants"), icon: UtensilsCrossed },
+    { to: "/insurance", label: t("nav.insurance"), icon: Shield },
+    { to: "/transfers", label: t("nav.transfers"), icon: Bus },
+    { to: "/trains", label: t("nav.trains"), icon: TrainFront },
+  ];
+  const allLinks = [...mainLinks, ...moreLinks];
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-background/70 backdrop-blur-2xl border-b border-border/50">
@@ -55,9 +58,9 @@ const Navbar = () => {
                   to={link.to}
                   className="relative px-3.5 py-2 text-[13px] font-medium transition-all duration-200"
                 >
-                  <span className={active ? "text-primary" : "text-muted-foreground hover:text-foreground"}>
-                    {link.label}
-                  </span>
+                <span className={active ? "text-primary" : "text-muted-foreground hover:text-foreground"}>
+                  {link.label}
+                </span>
                   {active && (
                     <motion.span
                       layoutId="navbar-pill"
@@ -79,7 +82,7 @@ const Navbar = () => {
                     : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
                 }`}
               >
-                Más <ChevronDown size={12} className={`transition-transform duration-200 ${moreOpen ? "rotate-180" : ""}`} />
+                {t("nav.more")} <ChevronDown size={12} className={`transition-transform duration-200 ${moreOpen ? "rotate-180" : ""}`} />
               </button>
               <AnimatePresence>
                 {moreOpen && (
@@ -117,16 +120,54 @@ const Navbar = () => {
             </div>
           </div>
 
-          {/* Auth buttons & Dashboard */}
+          {/* Auth buttons, language & Dashboard */}
           <div className="hidden lg:flex items-center gap-2">
+            {/* Language switcher */}
+            <div className="relative mr-1">
+              <button
+                onClick={() => setLangOpen(!langOpen)}
+                className="flex items-center gap-1.5 px-3 h-9 rounded-full text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/50 transition-colors"
+              >
+                <Globe size={15} />
+                {LANGS.find((l) => l.code === lang)?.flag}
+                <ChevronDown size={11} className={`transition-transform ${langOpen ? "rotate-180" : ""}`} />
+              </button>
+              <AnimatePresence>
+                {langOpen && (
+                  <>
+                    <div className="fixed inset-0 z-40" onClick={() => setLangOpen(false)} />
+                    <motion.div
+                      initial={{ opacity: 0, y: -4, scale: 0.97 }}
+                      animate={{ opacity: 1, y: 0, scale: 1 }}
+                      exit={{ opacity: 0, y: -4, scale: 0.97 }}
+                      transition={{ duration: 0.15 }}
+                      className="absolute right-0 top-full mt-2 w-44 bg-popover/95 backdrop-blur-xl border border-border/50 rounded-2xl shadow-2xl p-2 z-50"
+                    >
+                      {LANGS.map((l) => (
+                        <button
+                          key={l.code}
+                          onClick={() => { setLang(l.code); setLangOpen(false); }}
+                          className={`w-full flex items-center gap-3 px-3 py-2 rounded-xl text-[13px] font-medium transition-colors ${
+                            lang === l.code ? "bg-primary/10 text-primary" : "text-muted-foreground hover:text-foreground hover:bg-secondary/50"
+                          }`}
+                        >
+                          <span className="w-5 text-center text-[11px] font-bold">{l.flag}</span>
+                          {l.label}
+                        </button>
+                      ))}
+                    </motion.div>
+                  </>
+                )}
+              </AnimatePresence>
+            </div>
             <Link to="/dashboard" className="p-2 text-muted-foreground hover:text-foreground hover:bg-secondary/50 rounded-full transition-colors mr-2">
               <User size={20} />
             </Link>
             <Button variant="ghost" size="sm" className="text-muted-foreground hover:text-foreground text-[13px] h-9 rounded-full px-4">
-              Iniciar sesión
+              {t("nav.signin")}
             </Button>
             <Button size="sm" className="neon-glow h-9 text-[13px] rounded-full px-5">
-              Registrarse
+              {t("nav.signup")}
             </Button>
           </div>
 
@@ -170,11 +211,24 @@ const Navbar = () => {
                 );
               })}
               <div className="pt-4 flex flex-col gap-2 border-t border-border/50 mt-3">
+                <div className="flex flex-wrap gap-1.5 pb-2 mb-1 border-b border-border/50">
+                  {LANGS.map((l) => (
+                    <button
+                      key={l.code}
+                      onClick={() => setLang(l.code)}
+                      className={`px-2.5 py-1.5 rounded-lg text-[11px] font-bold transition-colors ${
+                        lang === l.code ? "bg-primary/15 text-primary" : "bg-secondary/50 text-muted-foreground"
+                      }`}
+                    >
+                      {l.flag}
+                    </button>
+                  ))}
+                </div>
                 <Link to="/dashboard" onClick={() => setMobileOpen(false)} className="flex items-center justify-center gap-2 w-full py-2 text-sm text-foreground hover:bg-secondary/50 rounded-xl mb-2">
-                  <User size={18} /> Mi Perfil
+                  <User size={18} /> {t("nav.profile")}
                 </Link>
-                <Button variant="ghost" className="w-full justify-center text-sm rounded-xl">Iniciar sesión</Button>
-                <Button className="w-full justify-center neon-glow text-sm rounded-xl">Registrarse</Button>
+                <Button variant="ghost" className="w-full justify-center text-sm rounded-xl">{t("nav.signin")}</Button>
+                <Button className="w-full justify-center neon-glow text-sm rounded-xl">{t("nav.signup")}</Button>
               </div>
             </div>
           </motion.div>

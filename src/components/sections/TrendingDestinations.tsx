@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import { Star, TrendingUp, ArrowRight } from "lucide-react";
+import { useI18n } from "@/lib/i18n";
 
 const PLACEHOLDER = "/placeholder.svg";
 
@@ -63,6 +64,7 @@ const destinations = [
 
 const TrendingDestinations = () => {
   const navigate = useNavigate();
+  const { t } = useI18n();
 
   return (
     <section className="py-20 px-4">
@@ -72,11 +74,11 @@ const TrendingDestinations = () => {
             <div className="flex items-center gap-2 mb-1">
               <TrendingUp className="text-primary" size={20} />
               <h2 className="text-2xl sm:text-3xl font-display font-bold text-foreground">
-                Destinos Trending
+                {t("trending.title")}
               </h2>
             </div>
             <p className="text-sm text-muted-foreground">
-              Los destinos más buscados por nuestra comunidad
+              {t("trending.subtitle")}
             </p>
           </div>
         </div>

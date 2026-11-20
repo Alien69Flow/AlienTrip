@@ -1,15 +1,18 @@
 import { motion } from "framer-motion";
-import { flightProviders, stayProviders, activityProviders } from "@/lib/partnerLinks";
+import { flightProviders, stayProviders, activityProviders, transportProviders, carRentalProviders, esimProviders, transferProviders, insuranceProviders, packageProviders } from "@/lib/partnerLinks";
+import { useI18n } from "@/lib/i18n";
 
 // Continuous marquee of real market partners — reinforces "we compare everything".
 const PartnerMarquee = () => {
-  const all = [...flightProviders, ...stayProviders, ...activityProviders];
-  const row = [...all, ...all]; // duplicated for seamless loop
+  const { t } = useI18n();
+  const all = [...flightProviders, ...stayProviders, ...activityProviders, ...transportProviders, ...carRentalProviders, ...esimProviders, ...transferProviders, ...insuranceProviders, ...packageProviders];
+  const unique = Array.from(new Map(all.map((p) => [p.id, p])).values());
+  const row = [...unique, ...unique]; // duplicated for seamless loop
 
   return (
     <section className="py-10 border-y border-border/50 bg-card/30 overflow-hidden">
       <p className="text-center text-xs font-medium tracking-widest uppercase text-muted-foreground mb-6">
-        Comparamos precios en vivo con los mejores del mercado
+        {t("marquee.title")}
       </p>
       <div className="relative">
         <div className="flex gap-3 w-max animate-marquee">

@@ -5,31 +5,36 @@ import {
   Package, Plane, Shield, Smartphone,
   TrainFront, UtensilsCrossed,
 } from "lucide-react";
+import { useI18n } from "@/lib/i18n";
 
 const categories = [
-  { to: "/activities", icon: Compass, title: "Actividades", desc: "Tours y experiencias locales", iconColor: "text-rose-400" },
-  { to: "/ai-planner", icon: Bot, title: "AI Planner", desc: "Planifica con inteligencia artificial", iconColor: "text-primary", isNew: true },
-  { to: "/stays", icon: Hotel, title: "Alojamiento", desc: "Hoteles, hostels y apartamentos", iconColor: "text-amber-400" },
-  { to: "/rentals", icon: Car, title: "Alquileres", desc: "Coches, motos y bicicletas", iconColor: "text-purple-400" },
-  { to: "/coliving", icon: Home, title: "Coliving", desc: "Vive con comunidades globales", iconColor: "text-green-400" },
-  { to: "/esim", icon: Smartphone, title: "eSIM", desc: "Conectividad instantánea", iconColor: "text-teal-400", isNew: true },
-  { to: "/packages", icon: Package, title: "Paquetes", desc: "Vuelo + hotel combinados", iconColor: "text-violet-400" },
-  { to: "/restaurants", icon: UtensilsCrossed, title: "Restaurantes", desc: "Gastronomía en cada destino", iconColor: "text-orange-400", isNew: true },
-  { to: "/insurance", icon: Shield, title: "Seguros", desc: "Viaja siempre protegido", iconColor: "text-emerald-400", isNew: true },
-  { to: "/transfers", icon: Bus, title: "Transfers", desc: "Traslados aeropuerto-ciudad", iconColor: "text-indigo-400", isNew: true },
-  { to: "/trains", icon: TrainFront, title: "Trenes", desc: "Trenes y buses por Europa", iconColor: "text-sky-400", isNew: true },
-  { to: "/flights", icon: Plane, title: "Vuelos", desc: "Compara cientos de aerolíneas", iconColor: "text-blue-400" },
+  { to: "/activities", icon: Compass, desc: "Tours y experiencias locales", iconColor: "text-rose-400" },
+  { to: "/ai-planner", icon: Bot, desc: "Planifica con inteligencia artificial", iconColor: "text-primary", isNew: true },
+  { to: "/stays", icon: Hotel, desc: "Hoteles, hostels y apartamentos", iconColor: "text-amber-400" },
+  { to: "/rentals", icon: Car, desc: "Coches, motos y bicicletas", iconColor: "text-purple-400" },
+  { to: "/coliving", icon: Home, desc: "Vive con comunidades globales", iconColor: "text-green-400" },
+  { to: "/esim", icon: Smartphone, desc: "Conectividad instantánea", iconColor: "text-teal-400", isNew: true },
+  { to: "/packages", icon: Package, desc: "Vuelo + hotel combinados", iconColor: "text-violet-400" },
+  { to: "/restaurants", icon: UtensilsCrossed, desc: "Gastronomía en cada destino", iconColor: "text-orange-400", isNew: true },
+  { to: "/insurance", icon: Shield, desc: "Viaja siempre protegido", iconColor: "text-emerald-400", isNew: true },
+  { to: "/transfers", icon: Bus, desc: "Traslados aeropuerto-ciudad", iconColor: "text-indigo-400", isNew: true },
+  { to: "/trains", icon: TrainFront, desc: "Trenes y buses por Europa", iconColor: "text-sky-400", isNew: true },
+  { to: "/flights", icon: Plane, desc: "Compara cientos de aerolíneas", iconColor: "text-blue-400" },
 ];
 
 const CategoryShowcase = () => {
+  const { t } = useI18n();
+  const catKey = (to: string) =>
+    `nav.${to === "/ai-planner" ? "aiPlanner" : to.slice(1)}`;
+
   return (
     <section className="py-20 px-4 border-t border-border">
       <div className="max-w-7xl mx-auto">
         <h2 className="text-2xl sm:text-3xl font-display font-bold text-foreground mb-2 text-center">
-          Todo lo que necesitas
+          {t("categories.title")}
         </h2>
         <p className="text-sm text-muted-foreground mb-12 text-center max-w-lg mx-auto">
-          12 servicios en una sola plataforma para planificar, comparar y reservar
+          {t("categories.subtitle")}
         </p>
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
@@ -55,7 +60,7 @@ const CategoryShowcase = () => {
                   className={`${cat.iconColor} mb-3 group-hover:scale-110 transition-transform`}
                 />
                 <h3 className="font-display font-semibold text-foreground text-sm mb-0.5">
-                  {cat.title}
+                  {t(catKey(cat.to))}
                 </h3>
                 <p className="text-xs text-muted-foreground">{cat.desc}</p>
               </Link>
