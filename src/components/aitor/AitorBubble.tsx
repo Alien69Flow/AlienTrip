@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Bot, X, Loader as Loader2 } from "lucide-react";
 import { supabase, ensureSession, isSupabaseConfigured } from "@/lib/supabase";
-import { streamAitorChat, type AitorMessage } from "@/lib/aitor";
+import { streamAitorChat, getLocalAitorReply, type AitorMessage } from "@/lib/aitor";
 
 interface Message {
   role: "user" | "assistant";
@@ -87,36 +87,20 @@ const AitorBubble = () => {
           return copy;
         });
       });
-      // Persist the full turn (user question + assistant reply) once done.
-      setMessages((prev) => {
-        const last = prev[prev.length - 1];
-        if (isSupabaseConfigured && supabase) {
-          (async () => {
-            try {
-              const sid = sessionIdRef.current ?? (await ensureSession());
-              sessionIdRef.current = sid;
-              await supabase.from("aitor_messages").insert([
-                { session_id: sid, role: "user", content: text },
-                ...(last.content
-                  ? [{ session_id: sid, role: "assistant", content: last.content }]
-                  : []),
-              ]);
-            } catch (e) {
-              console.error(e);
-            }
-          })();
-        }
-        return prev;
-      });
     } catch {
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          content:
-            "No he podido conectar con mi cerebro en este momento. Inténtalo de nuevo en unos segundos.",
-        },
-      ]);
+      // Remote brain unavailable — answer locally so the chat never dead-ends.
+      const reply = getLocalAitorReply(text);
+      for (const word of reply.split(" ")) {
+        setMessages((prev) => {
+          const copy = [...prev];
+          const last = copy[copy.length - 1];
+          if (last?.role === "assistant") {
+            copy[copy.length - 1] = { ...last, content: (last.content ? last.content + " " : "") + word };
+          }
+          return copy;
+        });
+        await new Promise((r) => setTimeout(r, 18));
+      }
     } finally {
       setLoading(false);
     }
