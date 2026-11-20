@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams, Link } from "react-router-dom";
 import { motion } from "framer-motion";
-import { ExternalLink, Search, MapPin, Users, Calendar, ArrowLeft, Loader2 } from "lucide-react";
+import { ExternalLink, Search, MapPin, Users, Calendar, ArrowLeft, Loader as Loader2 } from "lucide-react";
 import { getProviders, CATEGORY_LABELS, type SearchCategory } from "@/lib/searchProviders";
 import { supabase, getSessionId } from "@/lib/supabase";
 import { Button } from "@/components/ui/button";

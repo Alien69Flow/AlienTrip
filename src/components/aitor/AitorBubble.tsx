@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useCallback } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { Bot, X, ExternalLink, Loader2 } from "lucide-react";
+import { Bot, X, ExternalLink, Loader as Loader2 } from "lucide-react";
 import { supabase, ensureSession } from "@/lib/supabase";
 import { ECOSYSTEM } from "@/lib/ecosystem";
 
